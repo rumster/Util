@@ -1,0 +1,199 @@
+\documentclass{article}
+
+%\usepackage{semantic}
+\usepackage{amssymb}
+\usepackage{stmaryrd} % needed for [[]] : \llbracket \rrbracket
+%\usepackage{listings}
+
+\newcommand{\lsyn}{\llbracket} % A macro for left semantic brackets.
+\newcommand{\rsyn}{\rrbracket} % A macro for right semantic brackets.
+
+\newcommand{\COMMENT}[1]{}
+
+%\newcommand{\sfield}{\textit{sfield}}
+%\newcommand{\ifield}{\textit{ifield}}
+%\newcommand{\lref}{\textit{lref}}
+%\newcommand{\loc}{\textit{loc}}
+\newcommand{\Null}{\texttt{null}}
+\newcommand{\This}{@\texttt{this}}
+\newcommand{\Parameter}{@\texttt{parameter}}
+
+\title{A Breakdown of Soot's Jimple Statements}
+\date{\today}
+\author{Roman Manevich}
+
+\begin{document}
+%\pagenumbering{gobble}
+\maketitle
+
+
+\begin{scriptsize}
+\begin{tabular}{ll}
+\hline
+\textbf{Statement} ($s$)      & \textbf{Description / Conditions / Deconstruction}\\
+\hline
+\hline
+\multicolumn{2}{c}{\textbf{Identity Assignments}}\\
+\texttt{$l$ = $r$}           & \texttt{$s$ instanceof IdentityStmt}\\
+                & \texttt{$l$ = s.getLeftOp()} \\
+                & \texttt{$r$ = s.getLeftOp()} \\
+\hline
+\texttt{$l$ := \This}   & Assignment of the this reference to a local variable.\\
+   & \texttt{$r$ instanceof ThisRef}\\
+   & \texttt{$l$ instanceof Local}\\
+   & \texttt{$l$.getType() instanceof RefType}\\
+   & \texttt{l.getName().equals("this")}\\
+\hline
+\texttt{$l$ := \Parameter $i$}   & Assignment of a parameter to a local variable.\\
+   & \texttt{$r$ instanceof ParameterRef}\\
+   & \texttt{$l$ instanceof Local}\\
+   & \texttt{$i$ = r.getIndex()}\\
+\hline
+\hline
+\end{tabular}
+\end{scriptsize}
+
+\begin{scriptsize}
+\begin{tabular}{ll}
+\hline
+\textbf{Statement} ($s$)      & \textbf{Description / Conditions / Deconstruction}\\
+\hline
+\hline
+%\multicolumn{2}{c}{\textbf{Assignments}}\\
+                & \textbf{Assignments}\\
+\texttt{$l$ := $r$}           & \texttt{$s$ instanceof AssignStmt}\\
+                & \texttt{$l$ = s.getLeftOp()}\\
+                & \texttt{$r$ = s.getRightOp()}\\
+\hline
+\texttt{$l$ := neg $o$}           & Assignment of a negation expression (-$o$) to a local variable.\\
+                & \texttt{$r$ instanceof NegExpr}\\
+                & \texttt{$o$ = r.getOp()}\\
+                & \texttt{$o$ instanceof Local}\\
+\hline
+\texttt{$l$ := ($T$) $o$}           & Assignment of a cast expression to a local variable.\\
+                & \texttt{$r$ instanceof CastExpr}\\
+                & \texttt{$o$ = r.getOp()}\\
+                & \texttt{$T$ = $r$.getCastType()}\\
+\hline
+\texttt{$l$ = new $T$}           & Assignment of a new array expression to a local variable.\\
+                & \texttt{$l$ instanceof Local}\\
+                & \texttt{$r$ instanceof NewArrayExpr}\\
+                & \texttt{$T$ = $r$.getBaseType()}\\
+\hline
+\texttt{$l$ = newarray ($T$)[$n$]}           & Assignment of a new array expression to a local variable.\\
+                & \texttt{$l$ instanceof Local \&\& $l$.getType() instanceof RefType}\\
+                & \texttt{$r$ instanceof NewExpr}\\
+                & \texttt{$T$ = $r$.getBaseType()}\\
+                & \texttt{$n$ = $r$.getSize()}\\
+\hline
+\texttt{$l$ = newmultiarray ($T$)[$n_1$]$\ldots$[$n_k$]}           & Assignment of a new multi-dimensional array expression to a local variable.\\
+                & \texttt{$l$ instanceof Local \&\& $l$.getType() instanceof RefType}\\
+                & \texttt{$r$ instanceof NewMultiArrayExpr}\\
+                & \texttt{$T$ = $r$.getBaseType()}\\
+                & \texttt{$(n_1,\ldots,n_k)$ = $r$.getSizes()}\\
+\hline
+\texttt{$l$ = null}                & Assignment of the null constant to a local variable.\\
+                & \texttt{$l$ instanceof Local \&\& $l$.getType() instanceof RefType}\\
+                & \texttt{$r$ instanceof NullConstant}\\
+\hline
+\texttt{$l$ = lengthof $a$}    & Assignment of an array length to a local variable.\\
+                & \texttt{$l$ instanceof Local}\\
+                & \texttt{$r$ instanceof LengthExpr}\\
+                & \texttt{$l$.getType() instanceof IntegerType}\\
+\hline
+\texttt{$l$ = $o$ instanceof $T$}    & Assignment of an \texttt{instanceof} expression to a local variable.\\
+                & \texttt{$l$ instanceof Local}\\
+                & \texttt{$r$ instanceof InstanceOfExpr}\\
+                & \texttt{$T$ = $r$.getCheckType()}\\
+                & \texttt{$o$ = $r$.getOp()}\\
+                & \texttt{$l$.getType() instanceof BooleanType}\\
+\hline
+\texttt{$l$ = virtualinvoke $b.m(a_1,\ldots,a_k)$}              & Assignment of a virtual method call to a local variable.\\
+                & \texttt{$r$ instanceof InstanceInvokeExpr}\\
+                & \texttt{$b$ = $r$.getBase()}\\
+                & \texttt{$m$ = $r$.getMethod()}\\
+                & \texttt{$(a_1,\ldots,a_k)$ = $r$.getArgs()}\\
+\hline
+\texttt{<$C:f$> = $r$}       & Assignment of a local variable to a static field.\\
+                & \texttt{$l$ instanceof StaticFieldRef}\\
+                & \texttt{$r$ instanceof Local}\\
+                & \texttt{$f$ = $l$.getField()}\\
+                & \texttt{$C$ = $f$.getDeclaringClass()}\\
+\hline
+\texttt{$b$.<$C:f$> = r}       & Assignment of a local variable to an instance field.\\
+                & \texttt{$l$ instanceof InstanceFieldRef} \\
+                & \texttt{$r$ instanceof Local}\\
+                & \texttt{$b$ = $l$.getBase()}\\
+                & \texttt{$f$ = $l$.getField()}\\
+                & \texttt{$C$ = $f$.getDeclaringClass()}\\
+\hline
+\texttt{$l$ = $o$[$i$]}              & Assignment of an array access expression to a local variable.\\
+\hline
+\texttt{$o[i]$ = $r$}              & Assignment to an array access expression from a local variable.\\
+\hline
+\end{tabular}
+\end{scriptsize}
+
+\begin{scriptsize}
+\begin{tabular}{ll}
+\hline
+\textbf{Statement} ($s$)      & \textbf{Description / Conditions / Deconstruction}\\
+\hline
+\hline
+\texttt{if $b$ goto $u$} & Conditional branching.\\
+                & \texttt{$s$ instanceof IfStmt}\\
+                & \texttt{$b$ = $s$.getCondition()}\\
+                & \texttt{$u$ = $s$.getTarget()}\\
+                & \texttt{$b$ instanceof ConditionExpr}\\
+                & \texttt{$b$ = $o_1$ \textit{binop} $o_2$}\\
+                & \texttt{$o_1$ = $r$.getOp1()}\\
+                & \texttt{$o_2$ = $r$.getOp2()}\\
+                & \texttt{$\textit{binop}$ = $r$.getSymbol()}\\
+%                & \texttt{$r$ instanceof (EqExpr, GeExpr, GtExpr, LeExpr, LtExpr, NeExpr)}\\
+%                & \texttt{$o_1$ instanceof IntegerType}\\
+%                & \texttt{$o_2$ instanceof IntegerType}\\
+\hline
+\texttt{virtualinvoke $b.m(a_1,\ldots,a_k)...$}              & A virtual method call.\\
+                & \texttt{$s$ instanceof InvokeStmt}\\
+                & \texttt{$b.m(a_1,\ldots,a_k)$ instanceof InstanceInvokeExpr}\\
+                & \texttt{$b$ = $r$.getBase()}\\
+                & \texttt{$m$ = $r$.getMethod()}\\
+                & \texttt{$(a_1,\ldots,a_k)$ = $r$.getArgs()}\\
+\hline
+\texttt{return} & Returning without a value.\\
+                & \texttt{$s$ instanceof ReturnVoidStmt}\\
+\hline
+\texttt{return $x$} & Returning a local variable.\\
+                & \texttt{$s$ instanceof ReturnStmt}\\
+                & \texttt{$x$ instanceof Local}\\
+\hline
+\texttt{goto $u$}    & A \texttt{goto} statement.\\
+                & \texttt{$s$ instanceof GotoStmt}\\
+                & \texttt{$u$ = $s$.getTarget()}\\
+\hline
+\texttt{monitorenter $o$}    & A \texttt{monitorenter} statement.\\
+                & \texttt{$s$ instanceof EnterMonitorStmt}\\
+                & \texttt{$o$ = $s$.getOp()}\\
+                & \texttt{$o$.getType() instanceof RefType}\\
+\hline
+\texttt{monitorexit $o$}    & A \texttt{monitorexit} statement.\\
+                & \texttt{$s$ instanceof ExitMonitorStmt}\\
+                & \texttt{$o$ = $s$.getOp()}\\
+                & \texttt{$o$.getType() instanceof RefType}\\
+\hline
+\texttt{lookupswitch $o$...}    & A \texttt{switch} statement.\\
+                & \texttt{$s$ instanceof LookupSwitchStmt}\\
+\hline
+\texttt{tableswitch $o$...}    & A \texttt{tableswitch} statement.\\
+                & \texttt{$s$ instanceof TableSwitchStmt}\\
+\hline
+\texttt{throw $o$...}    & A \texttt{throw} statement.\\
+                & \texttt{$s$ instanceof ThrowStmt}\\
+\hline
+\texttt{nop}    & A \texttt{nop} statement.\\
+                & \texttt{$s$ instanceof NopStmt}\\
+\hline
+\end{tabular}
+\end{scriptsize}
+
+\end{document}

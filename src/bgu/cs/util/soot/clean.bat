@@ -1,0 +1,24 @@
+del *.ps
+del *.dvi
+del *.aux
+del *.bak
+del *.bbl
+del *.blg
+del *.cb
+del *.cb2
+del *.idx
+del *.ilg
+del *.ind
+del *.lof
+del *.log
+del *.lot
+del *.out
+del *.sav
+del *.tcp
+del *.tmp
+del *.toc
+del *.tps
+del *.synctex
+del *.synctex.gz
+
+C:\cygwin\bin\dos2unix *.tex
