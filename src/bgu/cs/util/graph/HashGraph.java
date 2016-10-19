@@ -111,7 +111,7 @@ public class HashGraph<Node, ED> implements Graph<Node, ED> {
 		}
 		Map<Node, ED> incoming = preds.get(n);
 		for (Node pred : incoming.keySet()) {
-			Map<Node, ED> predSuccs = preds.get(pred);
+			Map<Node, ED> predSuccs = succs.get(pred);
 			predSuccs.remove(n);
 		}
 		succs.remove(n);
