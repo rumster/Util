@@ -139,13 +139,13 @@ public class HashGraph<Node, ED> implements Graph<Node, ED> {
 	@Override
 	public int inDegree(Node n) {
 		assert containsNode(n);
-		return succs.get(n).size();
+		return preds.get(n).size();
 	}
 
 	@Override
 	public int outDegree(Node n) {
 		assert containsNode(n);
-		return preds.get(n).size();
+		return succs.get(n).size();
 	}
 
 	@Override
