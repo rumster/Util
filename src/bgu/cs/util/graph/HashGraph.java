@@ -153,4 +153,24 @@ public class HashGraph<Node, ED> implements Graph<Node, ED> {
 		assert containsNode(n);
 		return succs.get(n).size() + preds.get(n).size();
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append("{\n");
+		for (Map.Entry<Node, Map<Node, ED>> nodeEntry : succs.entrySet()) {
+			Node src = nodeEntry.getKey();
+			Map<Node, ED> outEdges = nodeEntry.getValue();
+			if (outEdges.isEmpty()) {
+				result.append(" (" + src.toString() + ")");
+			} else {
+				for (Map.Entry<Node, ED> edgeEntry : outEdges.entrySet()) {
+					result.append(
+							" (" + src.toString() + ", " + edgeEntry.getValue() + ", " + edgeEntry.getKey() + ")\n");
+				}
+			}
+		}
+		result.append("}");
+		return result.toString();
+	}
 }
