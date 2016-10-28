@@ -120,7 +120,7 @@ public interface Graph<Node, ED> {
 	public void mapSucc(Node n, EdgeFun<Node, ED> fun);
 
 	/**
-	 * Applies a given function to the incoming edges og a given node.
+	 * Applies a given function to the incoming edges of a given node.
 	 * 
 	 * @param n
 	 *            A non-null node, assumed to be in the graph.

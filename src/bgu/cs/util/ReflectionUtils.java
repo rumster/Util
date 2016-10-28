@@ -2,6 +2,7 @@ package bgu.cs.util;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -114,5 +115,39 @@ public class ReflectionUtils {
 	public static void copyField(Object from, Field f, Object to)
 			throws IllegalArgumentException, IllegalAccessException {
 		f.set(to, f.get(from));
+	}
+
+	/**
+	 * Returns the value of the named field in the given object.
+	 */
+	public static Object getFieldValue(Object obj, String fieldName)
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Field field = obj.getClass().getField(fieldName);
+		if (field != null)
+			return field.get(obj);
+		return null;
+	}
+
+	/**
+	 * Sets the value of the named field of the given object to the to the given
+	 * value.
+	 */
+	public static void setFieldValue(Object obj, String fieldName, Object value)
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Field field = obj.getClass().getField(fieldName);
+		if (field != null)
+			field.set(obj, value);
+	}
+
+	public static Method getMethodByName(Class<?> cls, String name) {
+		for (Method method : cls.getMethods()) {
+			if (method.getName().equals(name))
+				return method;
+		}
+		return null;
+	}
+
+	public static boolean isObjectRefType(Class<?> type) {
+		return !type.isPrimitive() && !type.isArray() && !type.isSynthetic();
 	}
 }

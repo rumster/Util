@@ -162,7 +162,7 @@ public class HashGraph<Node, ED> implements Graph<Node, ED> {
 			Node src = nodeEntry.getKey();
 			Map<Node, ED> outEdges = nodeEntry.getValue();
 			if (outEdges.isEmpty()) {
-				result.append(" (" + src.toString() + ")");
+				result.append(" (" + src.toString() + ")\n");
 			} else {
 				for (Map.Entry<Node, ED> edgeEntry : outEdges.entrySet()) {
 					result.append(
