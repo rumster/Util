@@ -34,4 +34,28 @@ public class GraphToDOT {
 
 		return result.toString();
 	}
+
+	public static <V, ED> String render(String name, MultiGraph<V, ED> g) {
+		StringBuilder result = new StringBuilder();
+		name = name.replace('-', '_');
+		result.append(name + " {\n");
+
+		HashMap<V, String> nodeToName = new HashMap<>();
+		int nodeCounter = 0;
+		for (V v : g.getNodes()) {
+			String nodeName = "N" + nodeCounter++;
+			nodeToName.put(v, nodeName);
+			result.append(nodeName + " [label=\"" + v.toString() + "\"];\n");
+		}
+		for (V src : g.getNodes()) {
+			final String srcName = nodeToName.get(src);
+			for (MultiGraph.Edge<V, ED> edge : g.succEdges(src)) {
+				final String dstName = nodeToName.get(edge.getDst());
+				result.append(srcName + "->" + dstName + "[label=\"" + edge.getLabel().toString() + "\"];\n");
+			}
+		}
+		result.append("}");
+
+		return result.toString();
+	}
 }
