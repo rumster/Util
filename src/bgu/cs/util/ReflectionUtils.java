@@ -128,6 +128,14 @@ public class ReflectionUtils {
 		return null;
 	}
 
+	public static boolean fieldExists(Object obj, String fieldName) {
+		for (Field field : obj.getClass().getDeclaredFields()) {
+			if (field.getName().equals(fieldName))
+				return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Sets the value of the named field of the given object to the to the given
 	 * value.
@@ -150,4 +158,9 @@ public class ReflectionUtils {
 	public static boolean isObjectRefType(Class<?> type) {
 		return !type.isPrimitive() && !type.isArray() && !type.isSynthetic();
 	}
+
+	public static boolean isIntType(Class<?> type) {
+		return type.isPrimitive() && !type.isSynthetic() && type.equals(Integer.TYPE);
+	}
+
 }
