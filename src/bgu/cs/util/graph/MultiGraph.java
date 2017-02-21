@@ -79,25 +79,13 @@ public interface MultiGraph<Node, ED> {
 	public Collection<Node> getNodes();
 
 	/**
-	 * Returns the set of successor nodes of a non-null node.
-	 * 
-	 * @param n
-	 *            A non-null node.
-	 * @return A set of nodes.
+	 * Returns the collection of edges outgoing from the given node.
 	 */
-	public Collection<Node> succ(Node n);
-
 	public Collection<? extends Edge<Node, ED>> succEdges(Node n);
 
 	/**
-	 * Returns the set of predecessor nodes of a non-null node.
-	 * 
-	 * @param n
-	 *            A non-null node.
-	 * @return A set of nodes.
+	 * Returns the collection of edges incoming to the given node.
 	 */
-	public Collection<Node> pred(Node n);
-
 	public Collection<? extends Edge<Node, ED>> predEdges(Node n);
 
 	/**

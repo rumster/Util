@@ -7,7 +7,7 @@ package bgu.cs.util.graph;
  */
 public class GraphUtils {
 	/**
-	 * Merges Adds all of the nodes and edges of the right-hand side graph to
+	 * Merges all of the nodes and edges of the right-hand side graph into
 	 * left-hand side graph. If a common edge exists then its data is
 	 * over-written with the one in the right-hand side graph.
 	 * 

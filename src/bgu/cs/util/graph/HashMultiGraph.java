@@ -1,6 +1,5 @@
 package bgu.cs.util.graph;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,28 +43,6 @@ public class HashMultiGraph<Node, ED> implements MultiGraph<Node, ED> {
 	@Override
 	public Set<Node> getNodes() {
 		return Collections.unmodifiableSet(succs.keySet());
-	}
-
-	@Override
-	public Collection<Node> succ(Node n) {
-		assert containsNode(n);
-		Set<HashEdge> edges = succs.get(n);
-		Set<Node> result = new HashSet<>();
-		for (HashEdge edge : edges) {
-			result.add(edge.dst);
-		}
-		return result;
-	}
-
-	@Override
-	public Collection<Node> pred(Node n) {
-		assert containsNode(n);
-		Set<HashEdge> edges = preds.get(n);
-		Set<Node> result = new HashSet<>();
-		for (HashEdge edge : edges) {
-			result.add(edge.src);
-		}
-		return result;
 	}
 
 	@Override
