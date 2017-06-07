@@ -17,7 +17,7 @@ import java.util.Set;
  * @param <E2>
  *            The type of the second element in every pair of the relation.
  */
-public class HashBinaryRelation<E1, E2> implements BinaryRelation<E1, E2> {
+public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 	/**
 	 * Maps an element of the first type to the set of elements of the second
 	 * with which it there is a pair in the relation.

@@ -12,7 +12,7 @@ import java.util.Collection;
  * @param <E2>
  *            The type of the second element in every pair of the relation.
  */
-public interface BinaryRelation<E1, E2> {
+public interface Rel2<E1, E2> {
 	/**
 	 * The number of pairs in the relation.
 	 */
