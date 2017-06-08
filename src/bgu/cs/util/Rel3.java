@@ -66,11 +66,11 @@ public interface Rel3<E1, E2, E3> {
 
 	public boolean remove23(E2 e2, E3 e3);
 
-	public Collection<Pair<E2, E3>> select1(E1 e1);
+	public Rel2<E2, E3> select1(E1 e1);
 
-	public Collection<Pair<E1, E3>> select2(E2 e2);
+	public Rel2<E1, E3> select2(E2 e2);
 
-	public Collection<Pair<E1, E2>> select3(E3 e3);
+	public Rel2<E1, E2> select3(E3 e3);
 
 	public Collection<E3> select12(E1 e1, E2 e2);
 

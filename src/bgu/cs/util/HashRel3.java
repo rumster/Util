@@ -131,91 +131,81 @@ public class HashRel3<E1, E2, E3> implements Rel3<E1, E2, E3> {
 
 	@Override
 	public boolean remove1(E1 e1) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
 	public boolean remove2(E2 e2) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
 	public boolean remove3(E3 e3) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
 	public boolean remove12(E1 e1, E2 e2) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
 	public boolean remove13(E1 e1, E3 e3) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
 	public boolean remove23(E2 e2, E3 e3) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
-	public Collection<Pair<E2, E3>> select1(E1 e1) {
-		// TODO Auto-generated method stub
-		return null;
+	public Rel2<E2, E3> select1(E1 e1) {
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
-	public Collection<Pair<E1, E3>> select2(E2 e2) {
-		// TODO Auto-generated method stub
-		return null;
+	public Rel2<E1, E3> select2(E2 e2) {
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
-	public Collection<Pair<E1, E2>> select3(E3 e3) {
-		// TODO Auto-generated method stub
-		return null;
+	public Rel2<E1, E2> select3(E3 e3) {
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
 	public Collection<E3> select12(E1 e1, E2 e2) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
 	public Collection<E2> select13(E1 e1, E3 e3) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
 	public Collection<E1> select23(E2 e2, E3 e3) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
 	public Collection<E1> all1() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
 	public Collection<E2> all2() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new Error("Unimplemented!");
 	}
 
 	@Override
 	public Collection<E3> all3() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new Error("Unimplemented!");
+	}
+
+	protected void buildE2ToE13() {
+		// e2ToE13 = new HashMap<>();
+		throw new Error("Unimplemented!");
 	}
 }
