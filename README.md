@@ -1,7 +1,7 @@
 # Util
 Java utilities that I found to be useful across my PL-related projects:
 * A graph data structure implementation
-* A binary relation data structure
+* Relation data structures: binary, ternary, with and without functional dependencies
 * Utilities for manipulating collections and arrays
 * String-manipulation utilities
 * Utilities for files

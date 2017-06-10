@@ -1,4 +1,4 @@
-package bgu.cs.util;
+package bgu.cs.util.rel;
 
 import java.util.Collection;
 

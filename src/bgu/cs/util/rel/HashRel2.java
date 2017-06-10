@@ -1,4 +1,4 @@
-package bgu.cs.util;
+package bgu.cs.util.rel;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * An implementation of a binary relation based on {@link HashMap> and
+ * An implementation of {@link Rel2} based on {@link HashMap> and
  * {@link HashSet}.
  * 
  * @author romanm
@@ -148,7 +148,7 @@ public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 	}
 
 	@Override
-	public void replace2(E2 first, E2 second) {
+	public void replace2(E2 first, E2 second) {		
 		throw new Error("unimeplemented!");
 	}
 

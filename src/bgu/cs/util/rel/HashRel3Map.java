@@ -1,4 +1,4 @@
-package bgu.cs.util;
+package bgu.cs.util.rel;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 /**
- * An implementation of a ternary relation based on {@link HashMap> and
+ * An implementation of {@link Rel3Map} based on {@link HashMap> and
  * {@link HashSet}.
  * 
  * @author romanm
@@ -18,14 +18,14 @@ import java.util.Map;
  * @param <E3>
  *            The type of the third element in every tuple of the relation.
  */
-public class HashRel3<E1, E2, E3> implements Rel3<E1, E2, E3> {
-	private Map<E1, Rel2<E2, E3>> e1ToE23 = new HashMap<>();
+public class HashRel3Map<E1, E2, E3> implements Rel3Map<E1, E2, E3> {
+	private Map<E1, Map<E2, E3>> e1ToE23 = new HashMap<>();
 	private Map<E2, Rel2<E1, E3>> e2ToE13 = new HashMap<>();
 	private Map<E3, Rel2<E1, E2>> e3ToE12 = new HashMap<>();
 
 	private int size = 0;
 
-	public HashRel3() {
+	public HashRel3Map() {
 	}
 
 	@Override
@@ -42,11 +42,11 @@ public class HashRel3<E1, E2, E3> implements Rel3<E1, E2, E3> {
 	public boolean contains(E1 e1, E2 e2, E3 e3) {
 		boolean result = false;
 		if (e1ToE23 != null) {
-			Rel2<E2, E3> e23s = e1ToE23.get(e1);
+			Map<E2, E3> e23s = e1ToE23.get(e1);
 			if (e23s == null) {
 				return false;
 			} else {
-				return e23s.contains(e2, e3);
+				return e23s.get(e2).equals(e3);
 			}
 		}
 		if (e2ToE13 != null) {
@@ -72,12 +72,13 @@ public class HashRel3<E1, E2, E3> implements Rel3<E1, E2, E3> {
 	public boolean add(E1 e1, E2 e2, E3 e3) {
 		boolean result = false;
 		if (e1ToE23 != null) {
-			Rel2<E2, E3> e23s = e1ToE23.get(e1);
+			Map<E2, E3> e23s = e1ToE23.get(e1);
 			if (e23s == null) {
-				e23s = new HashRel2<>();
+				e23s = new HashMap<>();
 				e1ToE23.put(e1, e23s);
 			}
-			result |= e23s.add(e2, e3);
+			result |= e23s.get(e2).equals(e3);
+			e23s.put(e2, e3);
 		}
 		if (e2ToE13 != null) {
 			Rel2<E1, E3> e13s = e2ToE13.get(e1);
@@ -109,7 +110,7 @@ public class HashRel3<E1, E2, E3> implements Rel3<E1, E2, E3> {
 	public boolean remove(E1 e1, E2 e2, E3 e3) {
 		boolean result = false;
 		if (e1ToE23 != null) {
-			Rel2<E2, E3> e23s = e1ToE23.get(e1);
+			Map<E2, E3> e23s = e1ToE23.get(e1);
 			if (e23s != null) {
 				result = e23s.remove(e2, e3);
 			}
@@ -206,6 +207,21 @@ public class HashRel3<E1, E2, E3> implements Rel3<E1, E2, E3> {
 
 	protected void buildE2ToE13() {
 		// e2ToE13 = new HashMap<>();
+		throw new Error("Unimplemented!");
+	}
+
+	@Override
+	public E3 get(E1 e1, E2 e2) {
+		throw new Error("Unimplemented!");
+	}
+
+	@Override
+	public E3 put(E1 e1, E2 e2, E3 e3) {
+		throw new Error("Unimplemented!");
+	}
+
+	@Override
+	public Map<E2, E3> get1(E1 e1) {
 		throw new Error("Unimplemented!");
 	}
 }
