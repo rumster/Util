@@ -34,4 +34,7 @@ public interface Rel3Map<E1, E2, E3> extends Rel3<E1, E2, E3> {
 	 *         otherwise.
 	 */
 	public E3 put(E1 e1, E2 e2, E3 e3);
+	
+	@Override
+	public Rel2Map<E1, E3> select2(E2 e2);
 }

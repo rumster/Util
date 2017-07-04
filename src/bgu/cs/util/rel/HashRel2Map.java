@@ -21,12 +21,12 @@ import bgu.cs.util.Pair;
  * @param <E2>
  *            The type of the second element in every pair of the relation.
  */
-public class HashRel2<E1, E2> implements Rel2<E1, E2> {
+public class HashRel2Map<E1, E2> implements Rel2Map<E1, E2> {
 	/**
-	 * Maps an element of the first type to the set of elements of the second
-	 * with which it there is a pair in the relation.
+	 * Maps an element of the first type to the second of element associated
+	 * with it if there is one and null otherwise.
 	 */
-	private Map<E1, Set<E2>> e1ToE2 = new HashMap<>();
+	private Map<E1, E2> e1ToE2 = new HashMap<>();
 
 	/**
 	 * Maps an element of the second type to the set of elements of the first
@@ -34,70 +34,65 @@ public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 	 * only if calls to selectSecond are made.
 	 */
 	private Map<E2, Set<E1>> e2ToE1 = null;
-	private int size = 0;
 
 	@Override
 	public int size() {
-		return this.size;
+		return e1ToE2.size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return this.size == 0;
+		return e1ToE2.isEmpty();
 	}
 
 	@Override
 	public boolean contains(E1 e1, E2 e2) {
-		Set<E2> e2s = e1ToE2.get(e1);
-		if (e2s == null)
-			return false;
-		return e2s.contains(e2);
+		E2 v2 = e1ToE2.get(e1);
+		return v2 != null && e2.equals(v2);
 	}
 
 	@Override
 	public boolean add(E1 e1, E2 e2) {
-		Set<E2> e2s = e1ToE2.get(e1);
-		if (e2s == null) {
-			e2s = new HashSet<>();
-			e1ToE2.put(e1, e2s);
-		}
-		boolean result = e2s.add(e2);
-		if (result)
-			++size;
+		assert !e1ToE2.containsKey(e1) : "Attempt to violate functional dependency!";
+		e1ToE2.put(e1, e2);
 
-		if (result && e2ToE1 != null) {
+		if (e2ToE1 != null) {
 			Set<E1> e1s = e2ToE1.get(e2);
 			e1s.add(e1);
 		}
 
-		return result;
+		return true;
 	}
 
 	@Override
 	public boolean remove(E1 e1, E2 e2) {
-		Set<E2> e2s = e1ToE2.get(e1);
-		if (e2s == null) {
+		if (contains(e1, e2)) {
+			e1ToE2.remove(e1);
+			if (e2ToE1 != null) {
+				Set<E1> e1s = e2ToE1.get(e2);
+				e1s.remove(e1);
+			}
+			return true;
+		} else {
 			return false;
 		}
-		boolean result = e2s.remove(e2);
-		if (result)
-			--size;
+	}
 
-		if (result && e2ToE1 != null) {
-			Set<E1> e1s = e2ToE1.get(e2);
-			e1s.remove(e1);
-		}
-
-		return result;
+	@Override
+	public void clear() {
+		if (e1ToE2 != null)
+			e1ToE2.clear();
+		if (e2ToE1 != null)
+			e2ToE1.clear();
 	}
 
 	@Override
 	public Collection<E2> selectFirst(E1 e1) {
-		Set<E2> e2s = e1ToE2.get(e1);
-		if (e2s == null) {
+		E2 e2 = e1ToE2.get(e1);
+		if (e2 == null) {
 			return java.util.Collections.emptySet();
 		} else {
-			return e2s;
+			return java.util.Collections.singleton(e2);
 		}
 	}
 
@@ -115,41 +110,31 @@ public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 		}
 	}
 
-	/**
-	 * Applies a binary function to each pair of elements in the relation. This
-	 * is a more efficient way to gain access to all pairs then {@link all}.
-	 * 
-	 * @param entryFun
-	 *            A function applies to (e1, e2) with a side-effect.
-	 */
 	public void map(BiFunction<E1, E2, Void> fun) {
 		if (e1ToE2 != null) {
-			for (Map.Entry<E1, Set<E2>> entry : e1ToE2.entrySet()) {
+			for (Map.Entry<E1, E2> entry : e1ToE2.entrySet()) {
 				E1 e1 = entry.getKey();
-				for (E2 e2 : entry.getValue()) {
-					fun.apply(e1, e2);
-				}
+				E2 e2 = entry.getValue();
+				fun.apply(e1, e2);
 			}
-		}
-		else {
+		} else {
 			buildE2ToE1s();
 			for (Map.Entry<E2, Set<E1>> entry : e2ToE1.entrySet()) {
 				E2 e2 = entry.getKey();
 				for (E1 e1 : entry.getValue()) {
 					fun.apply(e1, e2);
 				}
-			}			
+			}
 		}
 	}
 
 	@Override
 	public Collection<Pair<E1, E2>> all() {
 		ArrayList<Pair<E1, E2>> result = new ArrayList<>();
-		for (Map.Entry<E1, Set<E2>> entry : e1ToE2.entrySet()) {
+		for (Map.Entry<E1, E2> entry : e1ToE2.entrySet()) {
 			E1 e1 = entry.getKey();
-			for (E2 e2 : entry.getValue()) {
-				result.add(new Pair<>(e1, e2));
-			}
+			E2 e2 = entry.getValue();
+			result.add(new Pair<>(e1, e2));
 		}
 		return result;
 	}
@@ -170,27 +155,18 @@ public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 	@Override
 	public String toString() {
 		int printed = 0;
+		int size = size();
 		StringBuilder result = new StringBuilder("[");
-		for (Map.Entry<E1, Set<E2>> entry : e1ToE2.entrySet()) {
+		for (Map.Entry<E1, E2> entry : e1ToE2.entrySet()) {
 			E1 e1 = entry.getKey();
-			Set<E2> e2s = entry.getValue();
-			for (E2 e2 : e2s) {
-				result.append("(" + e1 + "," + e2 + ")");
-				++printed;
-				if (printed < size)
-					result.append(", ");
-			}
+			E2 e2 = entry.getValue();
+			result.append("(" + e1 + "," + e2 + ")");
+			++printed;
+			if (printed < size)
+				result.append(", ");
 		}
 		result.append("]");
 		return result.toString();
-	}
-
-	@Override
-	public void clear() {
-		if (e1ToE2 != null)
-			e1ToE2.clear();
-		if (e2ToE1 != null)
-			e2ToE1.clear();
 	}
 
 	@Override
@@ -208,17 +184,29 @@ public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 	 */
 	protected void buildE2ToE1s() {
 		e2ToE1 = new HashMap<>();
-		for (Map.Entry<E1, Set<E2>> entry : e1ToE2.entrySet()) {
+		for (Map.Entry<E1, E2> entry : e1ToE2.entrySet()) {
 			E1 e1 = entry.getKey();
-			Set<E2> e2s = entry.getValue();
-			for (E2 a2 : e2s) {
-				Set<E1> e1s = e2ToE1.get(a2);
-				if (e1s == null) {
-					e1s = new HashSet<E1>();
-					e2ToE1.put(a2, e1s);
-				}
-				e1s.add(e1);
+			E2 a2 = entry.getValue();
+			Set<E1> e1s = e2ToE1.get(a2);
+			if (e1s == null) {
+				e1s = new HashSet<E1>();
+				e2ToE1.put(a2, e1s);
 			}
+			e1s.add(e1);
 		}
+	}
+
+	@Override
+	public E2 get(E1 e1) {
+		return e1ToE2.get(e1);
+	}
+
+	@Override
+	public E2 put(E1 e1, E2 e2) {
+		E2 result = e1ToE2.put(e1, e2);
+		if (e2ToE1 != null) {
+			e2ToE1.remove(e2);
+		}
+		return result;
 	}
 }

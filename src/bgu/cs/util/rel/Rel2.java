@@ -1,6 +1,9 @@
 package bgu.cs.util.rel;
 
 import java.util.Collection;
+import java.util.function.BiFunction;
+
+import bgu.cs.util.Pair;
 
 /**
  * A binary relation is a set of ordered pairs (e1, e2).
@@ -47,21 +50,35 @@ public interface Rel2<E1, E2> {
 	 * @param e2
 	 *            A given value for e2.
 	 */
-	public Collection<E1> selectSecond(E2 e2);
+	public Collection<E1> select2(E2 e2);
+
+	/**
+	 * Applies a binary function to each pair of elements in the relation. This
+	 * is a more efficient way to gain access to all pairs then {@link all}.
+	 * 
+	 * @param entryFun
+	 *            A function applies to (e1, e2) with a side-effect.
+	 */
+	public void map(BiFunction<E1, E2, Void> entryFun);
+	
+	/**
+	 * Returns a set of pairs comprising this relation.
+	 */
+	public Collection<Pair<E1, E2>> all();
 
 	/**
 	 * Returns the multiset of values for e2 that exist in any pair in the
 	 * relation. A given value for e2 appears as many times as there are pairs
 	 * containing it.
 	 */
-	public Collection<E2> selectFirst();
+	public Collection<E2> all2();
 
 	/**
 	 * Returns the multiset of values for e1 that exist in any pair in the
 	 * relation. A given value for e1 appears as many times as there are pairs
 	 * containing it.
 	 */
-	public Collection<E1> selectSecond();
+	public Collection<E1> all1();
 
 	/**
 	 * Adds a pair to the relation.
@@ -84,6 +101,11 @@ public interface Rel2<E1, E2> {
 	 * @return true if such a pair exists.
 	 */
 	public boolean remove(E1 e1, E2 e2);
+
+	/**
+	 * Empties the relation.
+	 */
+	public void clear();
 
 	/**
 	 * Replace instance of 'first' with 'second' in all pairs.

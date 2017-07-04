@@ -5,7 +5,7 @@ package bgu.cs.util;
  * 
  * @author romanm
  */
-public class TimeCounter {
+public class Timer {
 	private long total;
 	private long lastLeg;
 
