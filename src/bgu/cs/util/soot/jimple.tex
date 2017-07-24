@@ -75,9 +75,9 @@
 &                & \texttt{$o$ = r.getOp()}\\
 &                & \texttt{$T$ = $r$.getCastType()}\\
 \hline
-7 & \texttt{$l$ = new $T$}           & Assignment of a new array expression to a local variable.\\
+7 & \texttt{$l$ = new $T$}           & Assignment of a new object to a local variable.\\
 &                & \texttt{$l$ instanceof Local}\\
-&                & \texttt{$r$ instanceof NewArrayExpr}\\
+&                & \texttt{$r$ instanceof NewExpr}\\
 &                & \texttt{$T$ = $r$.getBaseType()}\\
 \hline
 8 & \texttt{$l$ = newarray ($T$)[$n$]}           & Assignment of a new array expression to a local variable.\\
