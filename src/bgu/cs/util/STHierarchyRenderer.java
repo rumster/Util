@@ -33,8 +33,7 @@ public class STHierarchyRenderer {
 	public STHierarchyRenderer(STGLoader templates) {
 		this.templates = templates;
 		if (debug && logger != null)
-			logger.finest("Loading templates from "
-					+ templates.getGroupFileName());
+			logger.finest("Loading templates from " + templates.getGroupFileName());
 	}
 
 	public STHierarchyRenderer(Class<?> cls, String templatesFileName) {
@@ -51,16 +50,26 @@ public class STHierarchyRenderer {
 		if (o == null) {
 			return "";
 		} else {
-			// Anonymous classes have no simple name so get a name from their
-			// super class.
-			Class<?> cls = o.getClass();
-			String className = cls.getSimpleName();
-			while (className.equals("")) {
-				cls = cls.getSuperclass();
-				className = cls.getSimpleName();
-			}
+			String className = getSimpleTypeName(o);
 			return render(o, className);
 		}
+	}
+
+	public static String getSimpleTypeName(Object o) {
+		// Anonymous classes have no simple name so get a name from their
+		// super class.
+		Class<?> cls = o.getClass();
+		String className = cls.getSimpleName();
+		while (className.equals("")) {
+			cls = cls.getSuperclass();
+			className = cls.getSimpleName();
+		}
+		return className;
+	}
+
+	public boolean hasTemplate(Object o) {
+		String className = getSimpleTypeName(o);
+		return templates.load(className) != null;
 	}
 
 	/**
@@ -76,8 +85,8 @@ public class STHierarchyRenderer {
 
 		// Get the names of the template attributes and then use reflection
 		// to set the values of the corresponding fields in the node object.
-		Set<String> formalArgs = template.impl.formalArguments != null ? template.impl.formalArguments
-				.keySet() : new HashSet<String>();
+		Set<String> formalArgs = template.impl.formalArguments != null ? template.impl.formalArguments.keySet()
+				: new HashSet<String>();
 		for (String formalArg : formalArgs) {
 			if (formalArg.equals("date")) {
 				template.add("date", new Date().toString());
@@ -86,23 +95,31 @@ public class STHierarchyRenderer {
 				Object attributeValue = accessAttribute(o, attributeName);
 				template.add(formalArg, attributeValue);
 			} else if (formalArg.startsWith("is_")) {
-				String attributeName = StringUtils.camelNotation("is",
-						formalArg.replaceFirst("is_", ""));
+				String attributeName = StringUtils.camelNotation("is", formalArg.replaceFirst("is_", ""));
 				try {
 					Method testMethod = o.getClass().getMethod(attributeName);
 					Object answer = testMethod.invoke(o);
-					if (answer instanceof Boolean
-							&& ((Boolean) answer).booleanValue())
+					if (answer instanceof Boolean && ((Boolean) answer).booleanValue())
 						template.add(formalArg, "true");
-				} catch (NoSuchMethodException | SecurityException
-						| IllegalAccessException | IllegalArgumentException
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			} else if (formalArg.startsWith("test_")) {
+				String attributeName = formalArg.replaceFirst("test_", "");
+				try {
+					Method testMethod = o.getClass().getMethod(attributeName);
+					Object answer = testMethod.invoke(o);
+					if (answer instanceof Boolean && ((Boolean) answer).booleanValue())
+						template.add(formalArg, "true");
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
 					e.printStackTrace();
 				}
 			} else {
 				Object attributeValue = accessAttribute(o, formalArg);
 				if (attributeValue != null) {
-					if (attributeValue instanceof Iterable<?>) {
+					if (attributeValue instanceof Iterable<?> && !hasTemplate(attributeValue)) {
 						Iterable<?> attributeValueCollection = (Iterable<?>) attributeValue;
 						for (Object e : attributeValueCollection) {
 							template.add(formalArg, render(e));
@@ -138,8 +155,7 @@ public class STHierarchyRenderer {
 		if (attributeValue == null)
 			attributeValue = getFieldAttributeFromMethod(o, attributeName);
 		if (attributeValue == null) {
-			attributeValue = getFieldAttributeFromMethod(o,
-					StringUtils.camelNotation("get", attributeName));
+			attributeValue = getFieldAttributeFromMethod(o, StringUtils.camelNotation("get", attributeName));
 		}
 		return attributeValue;
 	}
@@ -151,8 +167,7 @@ public class STHierarchyRenderer {
 		try {
 			Field attributeField = o.getClass().getField(fieldName);
 			return attributeField.get(o);
-		} catch (NoSuchFieldException | IllegalArgumentException
-				| IllegalAccessException | SecurityException e) {
+		} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
 		}
 		return null;
 	}
@@ -164,15 +179,13 @@ public class STHierarchyRenderer {
 		try {
 			Method method = o.getClass().getMethod(methodName);
 			return method.invoke(o);
-		} catch (NoSuchMethodException | IllegalArgumentException
-				| IllegalAccessException | SecurityException
+		} catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | SecurityException
 				| InvocationTargetException e) {
 		}
 		return null;
 	}
 
 	protected boolean hasArgument(ST template, String arg) {
-		return template.impl.formalArguments != null
-				&& template.impl.formalArguments.containsKey(arg);
+		return template.impl.formalArguments != null && template.impl.formalArguments.containsKey(arg);
 	}
 }
