@@ -4,7 +4,7 @@ import soot.Unit;
 import soot.jimple.EnterMonitorStmt;
 
 /**
- * Matches a Jimple {@link soot.jimple.CaseEnterMonitorStmt}.
+ * Matches a Jimple {@link soot.jimple.EnterMonitorStmt}.
  * 
  * @author romanm
  */

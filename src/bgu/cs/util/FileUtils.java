@@ -12,6 +12,11 @@ import java.util.Collection;
 
 import org.stringtemplate.v4.ST;
 
+/**
+ * File-related utility methods.
+ * 
+ * @author romanm
+ */
 public class FileUtils {
 	public static final String newline = System.getProperty("line.separator", "\n");
 

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  =======================================================================
+    Compiler build file
+  =======================================================================
+-->
+<project name="Util" default="build" basedir=".">
+	<!-- Set global properties for this build -->
+	<property name="src" value="src" />
+	<property name="lib" value="lib" />
+	<property name="tools" value="tools" />
+	<property name="build" value="build" />
+	<property name="javadocs" value="javadocs" />
+
+	<!--
+       ===================================================================
+         Sets up internal values
+       ===================================================================
+  -->
+	<target name="init" description="-> sets up internal values">
+		<!-- Create the directory for classes and other resources -->
+		<mkdir dir="${build}" />
+	</target>
+
+	<!--
+       ===================================================================
+         Compiles the sources
+       ===================================================================
+  -->
+	<target name="classes" depends="init" description="-> compiles the source code to create the tree of classes">
+		<!-- Compile the java code from ${src} into ${classes} -->
+		<echo message="Compiling sources..." />
+		<javac srcdir="${src}" destdir="${build}" source="1.8" classpath="${lib}/soot-22-8-2014.jar; ${lib}/antlr-4.4-complete.jar" includeantruntime="false" />
+	</target>
+
+	<!--
+       ===================================================================
+         Create javadocs
+       ===================================================================
+  -->
+	<target name="javadocs" depends="init" description="-> creates javadocs">
+		<javadoc packagenames="bgu.*" sourcepath="src" classpath="${lib}/soot-22-8-2014.jar; ${lib}/antlr-4.4-complete.jar" defaultexcludes="yes" destdir="${javadocs}" author="true" version="true" use="true" windowtitle="Util">
+		</javadoc>
+	</target>
+
+	<!--
+       ===================================================================
+         Builds everything
+       ===================================================================
+  -->
+	<target name="build" depends="init, classes" description="-> compiles all classes">
+	</target>
+
+	<!--
+       ===================================================================
+         Packs classes into a jar file
+       ===================================================================
+  -->
+	<target name="jar" depends="build" description="-> packs all classes into a jar file">
+		<jar destfile="Util.jar" basedir="${build}" />
+	</target>
+
+	<!--
+       ===================================================================
+         Cleans and the builds
+       ===================================================================
+  -->
+	<target name="rebuild" depends="clean, build" description="-> first cleans and then build everything">
+	</target>
+
+	<!--
+       ===================================================================
+         Deletes the build directory tree
+       ===================================================================
+  -->
+	<target name="clean" description="-> cleans up build and dist directories">
+		<delete dir="${build}" />
+		<delete dir="${javadocs}" />
+		<delete file="Util.jar" />
+	</target>
+</project>

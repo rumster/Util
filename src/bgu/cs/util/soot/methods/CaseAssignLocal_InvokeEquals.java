@@ -5,8 +5,8 @@ import soot.RefType;
 import soot.Unit;
 
 /**
- * Matches an assignment from a call to the {@link java.lang.Object.equals}
- * method.
+ * Matches an assignment from a call to the {@link java.lang.Object}
+ * <code>equals</code> method.
  * 
  * @author romanm
  */

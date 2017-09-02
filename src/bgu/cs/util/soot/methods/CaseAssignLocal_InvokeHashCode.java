@@ -4,8 +4,8 @@ import bgu.cs.util.soot.CaseAssignLocal_InvokeInstance;
 import soot.Unit;
 
 /**
- * Matches an assignment from a call to the {@link java.lang.Object.hashCode}
- * method.
+ * Matches an assignment from a call to the {@link java.lang.Object}
+ * <code>hashCode</code> method.
  * 
  * @author romanm
  */

@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 public class ReflectionUtils {
 	/**
-	 * Tests whether {@link supercls} is the same as {@link cls} or one of its
+	 * Tests whether <code>supercls</code> is the same as <code>cls</code> or one of its
 	 * super classes.
 	 */
 	public static boolean isSubclass(Class<?> cls, final Class<?> supercls) {

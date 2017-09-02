@@ -87,7 +87,7 @@ public class Matcher<E> {
 	 * based on their inheritance relation.
 	 * 
 	 * @param classes
-	 *            A collection of classes extending Case<T>
+	 *            A collection of classes extending {@link Case}.
 	 */
 	protected void buildCasesTree(Collection<Class<?>> classes) {
 		Map<Class<?>, Case<E>> clsToInstance = new HashMap<>();

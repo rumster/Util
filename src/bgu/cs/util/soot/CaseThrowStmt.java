@@ -5,7 +5,7 @@ import soot.Value;
 import soot.jimple.ThrowStmt;
 
 /**
- * Matches a Jimple {@link soot.jimple.MonitorStmt.
+ * Matches {@link soot.jimple.ThrowStmt}.
  * 
  * @author romanm
  */
