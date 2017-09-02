@@ -31,7 +31,7 @@
 	<target name="classes" depends="init" description="-> compiles the source code to create the tree of classes">
 		<!-- Compile the java code from ${src} into ${classes} -->
 		<echo message="Compiling sources..." />
-		<javac srcdir="${src}" destdir="${build}" source="1.8" classpath="${lib}/soot-22-8-2014.jar; ${lib}/antlr-4.4-complete.jar" includeantruntime="false" />
+		<javac srcdir="${src}" destdir="${build}" source="1.8" classpath="${lib}/soot-22-8-2014.jar; ${lib}/ST-4.0.8.jar" includeantruntime="false" />
 	</target>
 
 	<!--
@@ -40,7 +40,7 @@
        ===================================================================
   -->
 	<target name="javadocs" depends="init" description="-> creates javadocs">
-		<javadoc packagenames="bgu.*" sourcepath="src" classpath="${lib}/soot-22-8-2014.jar; ${lib}/antlr-4.4-complete.jar" defaultexcludes="yes" destdir="${javadocs}" author="true" version="true" use="true" windowtitle="Util">
+		<javadoc packagenames="bgu.*" sourcepath="src" classpath="${lib}/soot-22-8-2014.jar; ${lib}/ST-4.0.8.jar" defaultexcludes="yes" destdir="${javadocs}" author="true" version="true" use="true" windowtitle="Util">
 		</javadoc>
 	</target>
 
