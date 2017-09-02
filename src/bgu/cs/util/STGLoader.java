@@ -29,12 +29,9 @@ public class STGLoader {
 
 		URL groupURL = cls.getResource(fileName);
 		if (groupURL == null)
-			throw new Error("Unable to find resource " + fileName
-					+ " for class " + cls.getName() + "!");
+			throw new Error("Unable to find resource " + fileName + " for class " + cls.getName() + "!");
 		try {
-			String groupFile = groupURL.getFile();
-			groupFile = groupFile.replaceAll("%20", " "); // For windows
-			templateGroup = new STGroupFile(groupFile, '$', '$');
+			templateGroup = new STGroupFile(groupURL, "UTF8", '$', '$');
 		} catch (Throwable t) {
 			throw new Error(t.getMessage());
 		}
@@ -109,7 +106,6 @@ public class STGLoader {
 	}
 
 	public static boolean hasArgument(ST template, String arg) {
-		return template.impl.formalArguments != null
-				&& template.impl.formalArguments.containsKey(arg);
+		return template.impl.formalArguments != null && template.impl.formalArguments.containsKey(arg);
 	}
 }
