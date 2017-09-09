@@ -106,9 +106,13 @@ public class FileUtils {
 	}
 
 	public static void stringToFile(String content, String filename) {
+		stringToFile(content, filename, false);
+	}
+
+	public static void stringToFile(String content, String filename, boolean append) {
 		assert content != null && filename != null;
 		try {
-			FileWriter writer = new FileWriter(filename);
+			FileWriter writer = new FileWriter(filename, append);
 			writer.write(content.toString());
 			writer.close();
 		} catch (IOException e) {
