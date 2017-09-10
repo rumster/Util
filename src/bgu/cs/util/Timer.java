@@ -6,7 +6,7 @@ package bgu.cs.util;
  * @author romanm
  */
 public class Timer {
-	private long total;
+	private long total = 0;
 	private long lastLeg;
 
 	/**
@@ -20,8 +20,8 @@ public class Timer {
 	 * Pauses time measurement.
 	 */
 	public void stop() {
-		lastLeg = System.currentTimeMillis() - lastLeg;
-		total += lastLeg;
+		total += System.currentTimeMillis() - lastLeg;
+		lastLeg = 0;
 	}
 
 	/**
