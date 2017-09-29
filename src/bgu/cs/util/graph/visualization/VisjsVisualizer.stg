@@ -1,0 +1,56 @@
+graph(dotstr, description, graphAsText) ::= <<
+<html>
+<head>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.css" rel="stylesheet" type="text/css"/>
+ 
+ <style type="text/css">
+   body {
+     font: 10pt sans;
+   }
+
+   #mynetwork {
+      width: 600px;
+      height: 600px;
+      border: 1px solid lightgray;
+  }
+  </style> 
+</head>
+<body>
+<H1>$description$</H1>
+<div id="mynetwork"></div>
+<script type="text/javascript">
+  // The graph represented in the DOT format.
+  var DOTstring = '$dotstr$';
+  var parsedData = vis.network.convertDot(DOTstring);
+
+  var data = {
+    nodes: parsedData.nodes,
+    edges: parsedData.edges
+  }
+
+  //var options = parsedData.options;
+  var options = {
+    nodes: {
+      size: 20,
+      font: {
+        size: 22
+      },
+      borderWidth: 2
+    },
+    edges: {
+      width: 2
+    },
+  }; 
+
+  // create a network
+  var container = document.getElementById('mynetwork');    
+
+  // create a network
+  var network = new vis.Network(container, data, options);
+</script>
+
+<PRE><CODE>$graphAsText$</CODE></PRE>
+</body>
+</html>
+>>

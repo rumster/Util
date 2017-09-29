@@ -1,0 +1,23 @@
+graph(dotstr, description, graphAsText, imageFile) ::= <<
+<html>
+<head>
+ <style type="text/css">
+   body {
+     font: 10pt sans;
+   }
+
+   #mynetwork {
+      width: 600px;
+      height: 600px;
+      border: 1px solid lightgray;
+  }
+  </style> 
+</head>
+<body>
+<H1>$description$</H1>
+<div id="mynetwork"></div>
+<img src=imageFile"">
+<PRE><CODE>$graphAsText$</CODE></PRE>
+</body>
+</html>
+>>

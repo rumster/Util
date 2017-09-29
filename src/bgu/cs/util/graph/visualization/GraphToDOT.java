@@ -1,14 +1,18 @@
-package bgu.cs.util.graph;
+package bgu.cs.util.graph.visualization;
 
 import java.util.HashMap;
 
+import bgu.cs.util.graph.Graph;
+import bgu.cs.util.graph.MultiGraph;
+
 /**
- * Creates a representation of the graph in DOT format.
+ * Converts graph to a <A hre="http://www.graphviz.org/doc/info/lang.html">DOT
+ * language</A> string.
  * 
  * @author romanm
  */
 public class GraphToDOT {
-	public static <V, ED> String render(String name, Graph<V, ED> g) {
+	public static <V, ED> String render(Graph<V, ED> g, String name) {
 		StringBuilder result = new StringBuilder();
 		name = name.replace('-', '_');
 		result.append(name + " {\n");
@@ -35,7 +39,7 @@ public class GraphToDOT {
 		return result.toString();
 	}
 
-	public static <V, ED> String render(String name, MultiGraph<V, ED> g) {
+	public static <V, ED> String render(MultiGraph<V, ED> g, String name) {
 		StringBuilder result = new StringBuilder();
 		name = name.replace('-', '_');
 		result.append(name + " {\n");
