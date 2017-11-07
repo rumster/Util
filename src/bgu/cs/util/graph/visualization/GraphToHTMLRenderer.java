@@ -10,7 +10,7 @@ import bgu.cs.util.graph.MultiGraph;
  * 
  * @author romanm
  */
-public abstract class HTMLVisualizer {
+public abstract class GraphToHTMLRenderer {
 	/**
 	 * Generates a visualization file.
 	 * 
@@ -19,6 +19,5 @@ public abstract class HTMLVisualizer {
 	 * @param description
 	 *            A description of the graph.
 	 */
-	public abstract void visualizeToFile(MultiGraph<?, ?> graph, String description, File outputFile)
-			throws IOException;
+	public abstract void renderToFile(MultiGraph<?, ?> graph, String description, File outputFile) throws IOException;
 }

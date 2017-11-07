@@ -1,6 +1,7 @@
 package bgu.cs.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -60,8 +61,8 @@ public class Matcher<E> {
 	 * 
 	 * @param o
 	 *            The object to match.
-	 * @return The most specific case that matches the given object or null if
-	 *         non does.
+	 * @return The most specific case that matches the given object or null if non
+	 *         does.
 	 */
 	public Case<E> match(E o) {
 		List<Case<E>> currentCases = new ArrayList<>(rootCases);
@@ -83,8 +84,8 @@ public class Matcher<E> {
 	}
 
 	/**
-	 * Builds a tree of case objects corresponding to the given case classes,
-	 * based on their inheritance relation.
+	 * Builds a tree of case objects corresponding to the given case classes, based
+	 * on their inheritance relation.
 	 * 
 	 * @param classes
 	 *            A collection of classes extending {@link Case}.
@@ -96,9 +97,10 @@ public class Matcher<E> {
 		for (Class<?> cls : classes) {
 			try {
 				@SuppressWarnings("unchecked")
-				Case<E> caseObj = (Case<E>) cls.newInstance();
+				Case<E> caseObj = (Case<E>) cls.getDeclaredConstructor().newInstance();
 				clsToInstance.put(cls, caseObj);
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				throw new Error("Failed to create a new " + cls.getName());
 			}
 		}
@@ -123,8 +125,8 @@ public class Matcher<E> {
 
 	/**
 	 * Defines a predicate over objects.<br>
-	 * This is the base class of all case classes that can be used as predicates
-	 * by a {@link Matcher}.
+	 * This is the base class of all case classes that can be used as predicates by
+	 * a {@link Matcher}.
 	 * 
 	 * @author romanm
 	 *
@@ -147,14 +149,13 @@ public class Matcher<E> {
 		 * 
 		 * @param element
 		 *            The object being tested.
-		 * @return true if the given element satisfies the predicate of this
-		 *         class.
+		 * @return true if the given element satisfies the predicate of this class.
 		 */
 		public abstract boolean match(E element);
 
 		/**
-		 * Adds a predicate that refines this predicate as a child in the
-		 * hierarchy of predicates.
+		 * Adds a predicate that refines this predicate as a child in the hierarchy of
+		 * predicates.
 		 * 
 		 * @param sub
 		 */

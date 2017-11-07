@@ -1,10 +1,9 @@
 package bgu.cs.util.rel;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
-import bgu.cs.util.Pair;
 
 /**
  * An implementation of {@link Rel3Map} based on {@link HashMap} and
@@ -190,15 +189,15 @@ public class HashRel3Map<E1, E2, E3> implements Rel3Map<E1, E2, E3> {
 
 	protected void buildE2ToE13() {
 		if (e2ToE13 == null) {
-			e2ToE13 = new HashRel2Map<>();
-			for (Pair<E1, Rel2Map<E2, E3>> entry : e1ToE23.all()) {
-				E1 e1 = entry.first;
-				Rel2Map<E2, E3> e2ToE3 = entry.second;
-				for (Pair<E2, E3> entry23 : e2ToE3.all()) {
-					E2 e2 = entry23.first;
-					E3 e3 = entry23.second;					
-				}
-			}
+//			e2ToE13 = new HashRel2Map<>();
+//			for (Pair<E1, Rel2Map<E2, E3>> entry : e1ToE23.all()) {
+//				E1 e1 = entry.first;
+//				Rel2Map<E2, E3> e2ToE3 = entry.second;
+//				for (Pair<E2, E3> entry23 : e2ToE3.all()) {
+//					E2 e2 = entry23.first;
+//					E3 e3 = entry23.second;					
+//				}
+//			}
 			throw new Error("Unimplemented!");
 		}
 	}

@@ -58,7 +58,7 @@ public class HashRel3<E1, E2, E3> implements Rel3<E1, E2, E3> {
 			}
 		}
 		if (e3ToE12 != null) {
-			Rel2<E1, E2> e12s = e3ToE12.get(e2);
+			Rel2<E1, E2> e12s = e3ToE12.get(e3);
 			if (e12s == null) {
 				return false;
 			} else {
@@ -80,7 +80,7 @@ public class HashRel3<E1, E2, E3> implements Rel3<E1, E2, E3> {
 			result |= e23s.add(e2, e3);
 		}
 		if (e2ToE13 != null) {
-			Rel2<E1, E3> e13s = e2ToE13.get(e1);
+			Rel2<E1, E3> e13s = e2ToE13.get(e2);
 			if (e13s == null) {
 				e13s = new HashRel2<>();
 				e2ToE13.put(e2, e13s);

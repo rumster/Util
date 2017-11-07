@@ -15,7 +15,7 @@ import bgu.cs.util.graph.MultiGraph;
  * 
  * @author romanm
  */
-public class GraphizVisualizer extends HTMLVisualizer {
+public class GraphizVisualizer extends GraphToHTMLRenderer {
 	protected STGLoader templates = new STGLoader(GraphizVisualizer.class);
 
 	public static final long GRAPHVIZ_TIMEOUT = 1;
@@ -70,7 +70,7 @@ public class GraphizVisualizer extends HTMLVisualizer {
 	}
 
 	@Override
-	public void visualizeToFile(MultiGraph<?, ?> graph, String description, File outputFile) throws IOException {
+	public void renderToFile(MultiGraph<?, ?> graph, String description, File outputFile) throws IOException {
 		String dotStr = GraphToDOT.render(graph, "anonymous_graph");
 		String dotFilename = outputFile.getName() + ".dt";
 		renderToFile(dotStr, dotFilename, "svg");

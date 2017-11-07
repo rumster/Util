@@ -14,11 +14,11 @@ import bgu.cs.util.graph.MultiGraph;
  * 
  * @author romanm
  */
-public class JSGraphItVisualizer extends HTMLVisualizer {
+public class JSGraphItVisualizer extends GraphToHTMLRenderer {
 	protected STGLoader templates = new STGLoader(JSGraphItVisualizer.class);
 
 	@Override
-	public void visualizeToFile(MultiGraph<?, ?> graph, String description, File file) throws IOException {
+	public void renderToFile(MultiGraph<?, ?> graph, String description, File file) throws IOException {
 		ST graphTemplate = templates.load("graph");
 		graphTemplate.add("description", description);
 		graphTemplate.add("graphAsText", graph.toString());
