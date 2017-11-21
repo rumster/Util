@@ -63,7 +63,7 @@ public class BucketHeap<K, V> {
 	}
 
 	/**
-	 * Returns the number of heap entires.
+	 * Returns the number of heap entries.
 	 */
 	public int size() {
 		return size;
