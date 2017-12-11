@@ -9,6 +9,8 @@ import java.util.NoSuchElementException;
 /**
  * Iterates over all tuples in the Cartesian product of a tuple of collections.
  * 
+ * TODO: This class is untested. Add tests.
+ * 
  * @author romanm
  *
  * @param <T>
@@ -24,6 +26,9 @@ public class CartesianIterator<T> implements Iterator<List<T>> {
 		assert domains != null && tuple != null && domains.size() == tuple.size();
 		this.domains = domains;
 		this.digits = new ArrayList<Iterator<T>>(domains.size());
+		for (int i = 0; i < domains.size(); ++i) {
+			this.digits.add(null);
+		}
 		int i = 0;
 		for (Collection<T> domain : domains) {
 			Iterator<T> domainIter = domain.iterator();

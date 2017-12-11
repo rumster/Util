@@ -21,6 +21,14 @@ public class STGLoader {
 		this(cls, null);
 	}
 
+	public STGLoader(URL url) {
+		try {
+			templateGroup = new STGroupFile(url, "UTF8", '$', '$');
+		} catch (Throwable t) {
+			throw new Error(t.getMessage());
+		}
+	}
+
 	public STGLoader(Class<?> cls, String fileName) {
 		if (fileName == null)
 			fileName = cls.getSimpleName() + ".stg";
@@ -28,6 +36,7 @@ public class STGLoader {
 			fileName += ".stg";
 
 		URL groupURL = cls.getResource(fileName);
+
 		if (groupURL == null)
 			throw new Error("Unable to find resource " + fileName + " for class " + cls.getName() + "!");
 		try {
@@ -53,8 +62,8 @@ public class STGLoader {
 	}
 
 	/**
-	 * Returns the set of templates in this group whose name starts with the
-	 * given prefix.
+	 * Returns the set of templates in this group whose name starts with the given
+	 * prefix.
 	 */
 	public ArrayList<String> getTemplateNames(String prefix, boolean mangleName) {
 		// For some reason StringTemplate adds forward slash to template names.

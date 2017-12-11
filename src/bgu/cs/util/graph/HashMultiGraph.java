@@ -157,8 +157,7 @@ public class HashMultiGraph<Node, ED> implements MultiGraph<Node, ED> {
 
 	@Override
 	public boolean removeEdge(Edge<Node, ED> edge) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException("unimplemented!");
 	}
 
 	public class HashEdge implements MultiGraph.Edge<Node, ED> {

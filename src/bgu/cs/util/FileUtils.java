@@ -55,8 +55,7 @@ public class FileUtils {
 	 * 
 	 * @param dirName
 	 *            A directory name.
-	 * @return A colon separated list of sub-directories under
-	 *         <code>dirName</code>.
+	 * @return A colon separated list of sub-directories under <code>dirName</code>.
 	 */
 	public static String getSubDirs(String dirName) {
 		Collection<String> dirs = new ArrayList<>();
@@ -132,8 +131,7 @@ public class FileUtils {
 	}
 
 	/**
-	 * Converts a package name to a relative path. Simple substitution of . with
-	 * /
+	 * Converts a package name to a relative path. Simple substitution of . with /
 	 * 
 	 * @param packageName
 	 *            the package name of the file.
@@ -149,4 +147,30 @@ public class FileUtils {
 		return new String(res) + "/";
 	}
 
+	public static String suffix(String filename) {
+		int dotIndex = filename.lastIndexOf('.');
+		if (dotIndex < 0) {
+			return "";
+		} else {
+			return filename.substring(dotIndex + 1, filename.length());
+		}
+	}
+
+	public static String base(String filename) {
+		int dotIndex = filename.lastIndexOf('.');
+		if (dotIndex < 0) {
+			return "";
+		} else {
+			return filename.substring(0, dotIndex);
+		}
+	}
+
+	public static String replaceSuffix(String filename, String newSuffix) {
+		int dotIndex = filename.lastIndexOf('.');
+		if (dotIndex < 0) {
+			return "";
+		} else {
+			return filename.substring(0, dotIndex) + File.pathSeparator + newSuffix;
+		}
+	}
 }

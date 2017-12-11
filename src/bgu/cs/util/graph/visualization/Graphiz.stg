@@ -1,4 +1,13 @@
-graph(dotstr, description, graphAsText, imageFile) ::= <<
+graph(name, nodes, edges) ::= <<
+digraph $name$ {
+  node [shape=box];
+  $nodes:{it| $it.first$ [label="$it.second$"]}; separator=";\n"
+  $edges; separator=";\n"
+}
+>>
+
+
+graphPage(dotstr, description, graphAsText, imageFile) ::= <<
 <html>
 <head>
  <style type="text/css">

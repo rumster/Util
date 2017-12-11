@@ -6,7 +6,7 @@ import bgu.cs.util.graph.Graph;
 import bgu.cs.util.graph.MultiGraph;
 
 /**
- * Converts graph to a <A hre="http://www.graphviz.org/doc/info/lang.html">DOT
+ * Converts graph to a <A href="http://www.graphviz.org/doc/info/lang.html">DOT
  * language</A> string.
  * 
  * @author romanm
@@ -15,7 +15,7 @@ public class GraphToDOT {
 	public static <V, ED> String render(Graph<V, ED> g, String name) {
 		StringBuilder result = new StringBuilder();
 		name = name.replace('-', '_');
-		result.append(name + " {\n");
+		result.append("digraph " + name + " {\n node [shape=box];\n");
 
 		HashMap<V, String> nodeToName = new HashMap<>();
 		int nodeCounter = 0;
@@ -42,7 +42,7 @@ public class GraphToDOT {
 	public static <V, ED> String render(MultiGraph<V, ED> g, String name) {
 		StringBuilder result = new StringBuilder();
 		name = name.replace('-', '_');
-		result.append(name + " {\n");
+		result.append("digraph " + name + " {\n node [shape=box];\n");
 
 		HashMap<V, String> nodeToName = new HashMap<>();
 		int nodeCounter = 0;

@@ -1,0 +1,56 @@
+index() ::= <<
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+   "http://www.w3.org/TR/html4/frameset.dtd">
+<HTML>
+<HEAD>
+<TITLE>Synthesis Summary</TITLE>
+</HEAD>
+<FRAMESET cols="20%,80%">
+   <FRAME name="main" src="main.html">
+   <FRAME name="dynamic" src="empty.html">
+</FRAMESET>
+</HTML>
+>>
+
+empty() ::= <<
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+   "http://www.w3.org/TR/html4/frameset.dtd">
+<HTML>
+<HEAD>
+<TITLE></TITLE>
+</HEAD>
+<BODY>
+</BODY>
+</HTML>
+>>
+
+tableOfContents(title, descriptionFileList, files) ::= <<
+<html>
+<head>
+<TITLE>Synthesis Summary Menu</TITLE>
+<!-- Redirect all link to the dynamic frame. -->
+<BASE href="." TARGET="dynamic">
+</head>
+<body>
+<H1>$title$</H1>
+<P>
+<OL>
+$descriptionFileList:{it|<LI> <A href="$it.second$">$it.first$</A>}; separator="<br>\n"$
+</UL>
+<UL>
+$files:{it|<LI> <A href="$it$">$it$</A>}; separator="<br>\n"$
+</OL>
+</body>
+</html> 
+>>
+
+code(content, description) ::= <<
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+   "http://www.w3.org/TR/html4/frameset.dtd">
+<HTML>
+<HEAD>
+<TITLE>$description$</TITLE>
+</HEAD>
+<BODY><PRE><CODE>$content$</CODE></PRE></BODY>
+</HTML>
+>>
