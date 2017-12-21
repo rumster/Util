@@ -23,15 +23,15 @@ import bgu.cs.util.Pair;
  */
 public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 	/**
-	 * Maps an element of the first type to the set of elements of the second
-	 * with which it there is a pair in the relation.
+	 * Maps an element of the first type to the set of elements of the second with
+	 * which it there is a pair in the relation.
 	 */
 	private Map<E1, Set<E2>> e1ToE2 = new HashMap<>();
 
 	/**
-	 * Maps an element of the second type to the set of elements of the first
-	 * with which it there is a pair in the relation. This map is maintained
-	 * only if calls to selectSecond are made.
+	 * Maps an element of the second type to the set of elements of the first with
+	 * which it there is a pair in the relation. This map is maintained only if
+	 * calls to selectSecond are made.
 	 */
 	private Map<E2, Set<E1>> e2ToE1 = null;
 	private int size = 0;
@@ -92,7 +92,7 @@ public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 	}
 
 	@Override
-	public Collection<E2> selectFirst(E1 e1) {
+	public Collection<E2> select1(E1 e1) {
 		Set<E2> e2s = e1ToE2.get(e1);
 		if (e2s == null) {
 			return java.util.Collections.emptySet();
@@ -116,8 +116,8 @@ public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 	}
 
 	/**
-	 * Applies a binary function to each pair of elements in the relation. This
-	 * is a more efficient way to gain access to all pairs then {@link all}.
+	 * Applies a binary function to each pair of elements in the relation. This is a
+	 * more efficient way to gain access to all pairs then {@link all}.
 	 * 
 	 * @param entryFun
 	 *            A function applies to (e1, e2) with a side-effect.
@@ -130,15 +130,14 @@ public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 					fun.apply(e1, e2);
 				}
 			}
-		}
-		else {
+		} else {
 			buildE2ToE1s();
 			for (Map.Entry<E2, Set<E1>> entry : e2ToE1.entrySet()) {
 				E2 e2 = entry.getKey();
 				for (E1 e1 : entry.getValue()) {
 					fun.apply(e1, e2);
 				}
-			}			
+			}
 		}
 	}
 
@@ -220,5 +219,17 @@ public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 				e1s.add(e1);
 			}
 		}
+	}
+
+	@Override
+	public void remove(E1 e1) {
+		if (e2ToE1 != null) {
+			Set<E2> e2s = e1ToE2.get(e1);
+			for (E2 e2 : e2s) {
+				Set<E1> e1s = e2ToE1.get(e2);
+				e1s.remove(e1s);
+			}
+		}
+		e1ToE2.remove(e1);
 	}
 }

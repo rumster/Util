@@ -1,6 +1,5 @@
 package bgu.cs.util.graph.visualization;
 
-import java.io.File;
 import java.io.IOException;
 
 import bgu.cs.util.graph.MultiGraph;
@@ -19,5 +18,6 @@ public abstract class GraphToHTMLRenderer {
 	 * @param description
 	 *            A description of the graph.
 	 */
-	public abstract void renderToFile(MultiGraph<?, ?> graph, String description, File outputFile) throws IOException;
+	public abstract void renderToFile(MultiGraph<?, ?> graph, String description, String filename, String path)
+			throws IOException;
 }

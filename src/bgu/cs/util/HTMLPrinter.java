@@ -82,10 +82,10 @@ public class HTMLPrinter {
 	}
 
 	public boolean printGraph(MultiGraph<?, ?> graph, String description) {
-		String fileName = "graph_" + descriptionFileList.size();
-		File file = new File(outputDirPath + File.separator + fileName + ".html");
+		String filename = "graph_" + descriptionFileList.size();
+		File file = new File(outputDirPath + File.separator + filename + ".html");
 		try {
-			graphVisualizer.renderToFile(graph, description, file);
+			graphVisualizer.renderToFile(graph, description, filename, outputDirPath);
 			String path = file.getCanonicalPath();
 			descriptionFileList.add(new Pair<String, String>(description, path));
 		} catch (IOException e) {

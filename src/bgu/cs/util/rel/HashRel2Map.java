@@ -23,15 +23,15 @@ import bgu.cs.util.Pair;
  */
 public class HashRel2Map<E1, E2> implements Rel2Map<E1, E2> {
 	/**
-	 * Maps an element of the first type to the second of element associated
-	 * with it if there is one and null otherwise.
+	 * Maps an element of the first type to the second of element associated with it
+	 * if there is one and null otherwise.
 	 */
 	private Map<E1, E2> e1ToE2 = new HashMap<>();
 
 	/**
-	 * Maps an element of the second type to the set of elements of the first
-	 * with which it there is a pair in the relation. This map is maintained
-	 * only if calls to selectSecond are made.
+	 * Maps an element of the second type to the set of elements of the first with
+	 * which it there is a pair in the relation. This map is maintained only if
+	 * calls to selectSecond are made.
 	 */
 	private Map<E2, Set<E1>> e2ToE1 = null;
 
@@ -87,7 +87,7 @@ public class HashRel2Map<E1, E2> implements Rel2Map<E1, E2> {
 	}
 
 	@Override
-	public Collection<E2> selectFirst(E1 e1) {
+	public Collection<E2> select1(E1 e1) {
 		E2 e2 = e1ToE2.get(e1);
 		if (e2 == null) {
 			return java.util.Collections.emptySet();
@@ -208,5 +208,17 @@ public class HashRel2Map<E1, E2> implements Rel2Map<E1, E2> {
 			e2ToE1.remove(e2);
 		}
 		return result;
+	}
+
+	@Override
+	public void remove(E1 e1) {
+		if (e2ToE1 != null) {
+			E2 e2 = e1ToE2.get(e1);
+			if (e2 != null) {
+				Set<E1> e1s = e2ToE1.get(e2);
+				e1s.remove(e1s);
+			}
+		}
+		e1ToE2.remove(e1);
 	}
 }

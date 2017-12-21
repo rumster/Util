@@ -147,6 +147,10 @@ public class FileUtils {
 		return new String(res) + "/";
 	}
 
+	/**
+	 * Returns the suffix of the file name, if one exists, and the empty string
+	 * otherwise.
+	 */
 	public static String suffix(String filename) {
 		int dotIndex = filename.lastIndexOf('.');
 		if (dotIndex < 0) {
@@ -156,19 +160,27 @@ public class FileUtils {
 		}
 	}
 
+	/**
+	 * Returns the file name without its suffix. If no suffix exists, the original
+	 * file name is returned.
+	 */
 	public static String base(String filename) {
 		int dotIndex = filename.lastIndexOf('.');
 		if (dotIndex < 0) {
-			return "";
+			return filename;
 		} else {
 			return filename.substring(0, dotIndex);
 		}
 	}
 
+	/**
+	 * Replaces the suffix of a file name with the given suffix. If the file name
+	 * does not contain any suffix, the given suffix is appended anyway.
+	 */
 	public static String replaceSuffix(String filename, String newSuffix) {
 		int dotIndex = filename.lastIndexOf('.');
 		if (dotIndex < 0) {
-			return "";
+			return filename + "." + newSuffix;
 		} else {
 			return filename.substring(0, dotIndex) + File.pathSeparator + newSuffix;
 		}

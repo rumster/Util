@@ -44,19 +44,37 @@ public class GraphizVisualizer extends GraphToHTMLRenderer {
 		boolean succeeded = false;
 		if (outputFormat != null) {
 			File outputFile = new File(fileBaseName + "." + outputFormat);
-			succeeded = renderViaGraphviz("dot", dotFile.getAbsolutePath(), outputFile.getAbsolutePath(), outputFormat,
+			succeeded = invokeGraphviz("dot", dotFile.getAbsolutePath(), outputFile.getAbsolutePath(), outputFormat,
 					logger);
 			if (!succeeded) {
 				if (logger != null) {
 					logger.info("Retrying with neato");
 				}
-				succeeded = renderViaGraphviz("neato", dotFile.getName(), outputFile.getName(), outputFormat, logger);
+				succeeded = invokeGraphviz("neato", dotFile.getName(), outputFile.getName(), outputFormat, logger);
 			}
 		}
 		return succeeded;
 	}
+	
+	@Override
+	public void renderToFile(MultiGraph<?, ?> graph, String description, String filename, String path)
+			throws IOException {
+		initTemplates();
 
-	public static boolean renderViaGraphviz(String graphvizUtility, String dotFileName, String outputFileName,
+		String dotStr = GraphToDOT.render(graph, "anonymous_graph");
+		String dotFilename = path + File.pathSeparator + filename + ".dt";
+		renderToFile(dotStr, dotFilename, "svg", logger);
+
+		ST graphTemplate = templates.load("graphPage");
+		graphTemplate.add("description", description);
+		String graphTxt = graph.toString();
+		graphTemplate.add("graphAsText", graphTxt);
+		graphTemplate.add("dotstr", dotStr);
+		FileUtils.stringToFile(graphTemplate.render(), path);
+	}
+	
+
+	public static boolean invokeGraphviz(String graphvizUtility, String dotFileName, String outputFileName,
 			String outputFormat, Logger logger) {
 		ProcessBuilder pb = new ProcessBuilder(graphvizUtility, dotFileName, "-o" + outputFileName,
 				"-T" + outputFormat);
@@ -78,23 +96,6 @@ public class GraphizVisualizer extends GraphToHTMLRenderer {
 		}
 	}
 
-	@Override
-	public void renderToFile(MultiGraph<?, ?> graph, String description, File outputFile) throws IOException {
-		initTemplates();
-		
-		String dotStr = GraphToDOT.render(graph, "anonymous_graph");
-		String dotFilename = outputFile.getName() + ".dt";
-		renderToFile(dotStr, dotFilename, "svg", logger);
-
-		ST graphTemplate = templates.load("graphPage");
-		graphTemplate.add("description", description);
-		String graphTxt = graph.toString();
-		graphTemplate.add("graphAsText", graphTxt);
-		graphTemplate.add("dotstr", dotStr);
-		String path = outputFile.getCanonicalPath();
-		FileUtils.stringToFile(graphTemplate.render(), path);
-	}
-
 	protected static void log(String message, Logger logger) {
 		if (logger != null) {
 			logger.info(message);
@@ -103,7 +104,7 @@ public class GraphizVisualizer extends GraphToHTMLRenderer {
 
 	protected void initTemplates() {
 		if (templates == null) {
-			templates = new STGLoader(GraphizVisualizer.class, "Graphviz");
+			templates = new STGLoader(GraphizVisualizer.class);
 		}
 	}
 }

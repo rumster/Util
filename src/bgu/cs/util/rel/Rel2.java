@@ -42,7 +42,7 @@ public interface Rel2<E1, E2> {
 	 * @param e1
 	 *            A given value for e1.
 	 */
-	public Collection<E2> selectFirst(E1 e1);
+	public Collection<E2> select1(E1 e1);
 
 	/**
 	 * Returns the set of values for e1 for a given value for e2.
@@ -53,30 +53,28 @@ public interface Rel2<E1, E2> {
 	public Collection<E1> select2(E2 e2);
 
 	/**
-	 * Applies a binary function to each pair of elements in the relation. This
-	 * is a more efficient way to gain access to all pairs then {@link all}.
+	 * Applies a binary function to each pair of elements in the relation. This is a
+	 * more efficient way to gain access to all pairs then {@link all}.
 	 * 
 	 * @param entryFun
 	 *            A function applies to (e1, e2) with a side-effect.
 	 */
 	public void map(BiFunction<E1, E2, Void> entryFun);
-	
+
 	/**
 	 * Returns a set of pairs comprising this relation.
 	 */
 	public Collection<Pair<E1, E2>> all();
 
 	/**
-	 * Returns the multiset of values for e2 that exist in any pair in the
-	 * relation. A given value for e2 appears as many times as there are pairs
-	 * containing it.
+	 * Returns the multiset of values for e2 that exist in any pair in the relation.
+	 * A given value for e2 appears as many times as there are pairs containing it.
 	 */
 	public Collection<E2> all2();
 
 	/**
-	 * Returns the multiset of values for e1 that exist in any pair in the
-	 * relation. A given value for e1 appears as many times as there are pairs
-	 * containing it.
+	 * Returns the multiset of values for e1 that exist in any pair in the relation.
+	 * A given value for e1 appears as many times as there are pairs containing it.
 	 */
 	public Collection<E1> all1();
 
@@ -126,4 +124,30 @@ public interface Rel2<E1, E2> {
 	 *            The 'e2' element used to be replace.
 	 */
 	public void replace2(E2 first, E2 second);
+
+	/**
+	 * Removes all pairs containing the given element in the first position.
+	 */
+	public void remove(E1 e1);
+
+	/**
+	 * A convenience method to add all pairs consisting of the first argument and an
+	 * element in the collection given by the second argument.
+	 */
+	public default void addAll(E1 e1, Collection<E2> e2s) {
+		for (E2 e2 : e2s) {
+			add(e1, e2);
+		}
+	}
+
+	/**
+	 * A convenience method to add all pairs consisting of any element from the
+	 * collection given by the first argument and the second argument.
+	 */
+	public default void addAll(Collection<E1> e1s, E2 e2) {
+		for (E1 e1 : e1s) {
+			add(e1, e2);
+		}
+
+	}
 }
