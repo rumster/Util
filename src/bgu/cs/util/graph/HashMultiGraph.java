@@ -159,7 +159,7 @@ public class HashMultiGraph<Node, ED> implements MultiGraph<Node, ED> {
 	public boolean removeEdge(Edge<Node, ED> edge) {
 		throw new UnsupportedOperationException("unimplemented!");
 	}
-
+	
 	public class HashEdge implements MultiGraph.Edge<Node, ED> {
 		public final Node src;
 		public final Node dst;

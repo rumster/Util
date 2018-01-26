@@ -1,5 +1,6 @@
 package bgu.cs.util.graph;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -37,15 +38,15 @@ public interface MultiGraph<Node, ED> {
 	public boolean containsNode(Node n);
 
 	/**
-	 * Checks whether an edge exists between the two given nodes, assumed to be
-	 * in the graph.
+	 * Checks whether an edge exists between the two given nodes, assumed to be in
+	 * the graph.
 	 * 
 	 * @param src
 	 *            The edge non-null source node, which is assumed to be in the
 	 *            graph.
 	 * @param dst
-	 *            The edge non-null destination node, which is assumed to be in
-	 *            the graph.
+	 *            The edge non-null destination node, which is assumed to be in the
+	 *            graph.
 	 */
 	public boolean containsEdge(Node src, Node dst);
 
@@ -130,6 +131,24 @@ public interface MultiGraph<Node, ED> {
 	 * Removes all nodes and edges.
 	 */
 	public void clear();
+
+	/**
+	 * Merges the first node into the second (and removes the second node).
+	 */
+	public default void mergeInto(Node from, Node to) {
+		if (from == to) {
+			return;
+		}
+		Collection<Edge<Node, ED>> outgoingEdgesToAdd = new ArrayList<>(succEdges(from));
+		for (Edge<Node, ED> edge : outgoingEdgesToAdd) {
+			addEdge(to, edge.getDst(), edge.getLabel());
+		}
+		Collection<Edge<Node, ED>> incomingEdgesToAdd = new ArrayList<>(predEdges(from));
+		for (Edge<Node, ED> edge : incomingEdgesToAdd) {
+			addEdge(edge.getSrc(), to, edge.getLabel());
+		}
+		removeNode(from);
+	}
 
 	public static interface Edge<Node, ED> {
 		public Node getSrc();
