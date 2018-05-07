@@ -17,6 +17,7 @@ import bgu.cs.util.graph.MultiGraph;
  * @author romanm
  */
 public class GraphizVisualizer extends GraphToHTMLRenderer {
+	public static final String GRAPHVIZ_OUTPUT_FORMAT = "svg";
 	public static final long GRAPHVIZ_TIMEOUT = 1;
 	protected STGLoader templates;
 	protected Logger logger;
@@ -55,24 +56,24 @@ public class GraphizVisualizer extends GraphToHTMLRenderer {
 		}
 		return succeeded;
 	}
-	
+
 	@Override
-	public void renderToFile(MultiGraph<?, ?> graph, String description, String filename, String path)
-			throws IOException {
+	public <V, ED> void renderToFile(MultiGraph<V, ED> graph, GraphicProperties<V, ED> gprops, String description, String baseFileName,
+			String path) throws IOException {
 		initTemplates();
 
-		String dotStr = GraphToDOT.render(graph, "anonymous_graph");
-		String dotFilename = path + File.pathSeparator + filename + ".dt";
-		renderToFile(dotStr, dotFilename, "svg", logger);
+		String dotStr = GraphToDOT.render(graph, "anonymous_graph", gprops);
+		String dotFilename = path + File.separator + baseFileName;
+		renderToFile(dotStr, dotFilename, GRAPHVIZ_OUTPUT_FORMAT, logger);
 
 		ST graphTemplate = templates.load("graphPage");
 		graphTemplate.add("description", description);
 		String graphTxt = graph.toString();
 		graphTemplate.add("graphAsText", graphTxt);
-		graphTemplate.add("dotstr", dotStr);
-		FileUtils.stringToFile(graphTemplate.render(), path);
+		String imageFileName = baseFileName + "." + GRAPHVIZ_OUTPUT_FORMAT;
+		graphTemplate.add("imageFile", imageFileName);
+		FileUtils.stringToFile(graphTemplate.render(), path + File.separator + baseFileName + ".html");
 	}
-	
 
 	public static boolean invokeGraphviz(String graphvizUtility, String dotFileName, String outputFileName,
 			String outputFormat, Logger logger) {

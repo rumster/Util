@@ -17,8 +17,8 @@ public class VisjsVisualizer extends GraphToHTMLRenderer {
 	protected STGLoader templates = new STGLoader(VisjsVisualizer.class);
 
 	@Override
-	public void renderToFile(MultiGraph<?, ?> graph, String description, String filename, String path)
-			throws IOException {
+	public <V, ED> void renderToFile(MultiGraph<V, ED> graph, GraphicProperties<V, ED> gprops, String description,
+			String filename, String path) throws IOException {
 		ST graphTemplate = templates.load("graph");
 		graphTemplate.add("description", description);
 
@@ -26,7 +26,7 @@ public class VisjsVisualizer extends GraphToHTMLRenderer {
 		graphTxt = graphTxt.replace("<", "&lt;");
 		graphTxt = graphTxt.replace(">", "&gt;");
 		graphTemplate.add("graphAsText", graphTxt);
-		String dotStr = GraphToDOT.render(graph, filename);
+		String dotStr = GraphToDOT.render(graph, filename, new GraphicProperties<>());
 		dotStr = dotStr.replace("\n", ""); // VIS doesn't parse newline characters well.
 		graphTemplate.add("dotstr", dotStr);
 		FileUtils.stringToFile(graphTemplate.render(), path);

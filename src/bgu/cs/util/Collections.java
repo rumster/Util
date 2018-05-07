@@ -14,6 +14,12 @@ import java.util.Set;
  * 
  */
 public class Collections {
+	public static <E> void addCopies(List<? super E> list, E obj, int num) {
+		for (int i = 0; i < num; ++i) {
+			list.add(obj);
+		}
+	}
+
 	/**
 	 * Compares two lists of non-null elements, index-by-index.
 	 */
@@ -39,8 +45,8 @@ public class Collections {
 	}
 
 	/**
-	 * Compares two collections by checking whether they contain the same sets
-	 * of elements.
+	 * Compares two collections by checking whether they contain the same sets of
+	 * elements.
 	 */
 	public static boolean equalSets(Collection<?> c1, Collection<?> c2) {
 		return c1.containsAll(c2) && c2.containsAll(c1);
@@ -78,8 +84,7 @@ public class Collections {
 			return result;
 		}
 		for (Object o : c) {
-			result = o != null ? prime * result + o.hashCode() : prime * result
-					+ 1;
+			result = o != null ? prime * result + o.hashCode() : prime * result + 1;
 		}
 		return result;
 	}
@@ -98,18 +103,17 @@ public class Collections {
 	/**
 	 * @param list
 	 *            of items
-	 * @return a HashMap where the key is the index for each item on the given
-	 *         list and the value is a set of the indexes of items which are
-	 *         equal to that index's item.
+	 * @return a HashMap where the key is the index for each item on the given list
+	 *         and the value is a set of the indexes of items which are equal to
+	 *         that index's item.
 	 */
-	public static <T> Map<Integer, List<Integer>> createEqualityMap(
-			final List<T> list) {
+	public static <T> Map<Integer, List<Integer>> createEqualityMap(final List<T> list) {
 		Map<Integer, List<Integer>> equallityMap = new HashMap<>();
 
 		// populate the equality mapper
 		for (int i = 0; i < list.size(); i++) {
 			equallityMap.put(i, new ArrayList<Integer>());
-			for (int j = i +1; j < list.size(); j++) {
+			for (int j = i + 1; j < list.size(); j++) {
 				if (list.get(i).equals(list.get(j))) {
 					equallityMap.get(i).add(j);
 				}

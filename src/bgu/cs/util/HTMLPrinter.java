@@ -9,6 +9,7 @@ import org.stringtemplate.v4.ST;
 
 import bgu.cs.util.graph.MultiGraph;
 import bgu.cs.util.graph.visualization.GraphToHTMLRenderer;
+import bgu.cs.util.graph.visualization.GraphicProperties;
 import bgu.cs.util.graph.visualization.GraphizVisualizer;
 
 /**
@@ -72,7 +73,7 @@ public class HTMLPrinter {
 		try {
 			String path = file.getCanonicalPath();
 			FileUtils.stringToFile(content, path);
-			descriptionFileList.add(new Pair<String, String>(description, path));
+			descriptionFileList.add(new Pair<String, String>(description, file.getName()));
 		} catch (IOException e) {
 			logger.severe("Unable to write to file " + file.getName() + " (" + e.getMessage() + ")!");
 			return false;
@@ -81,13 +82,16 @@ public class HTMLPrinter {
 
 	}
 
-	public boolean printGraph(MultiGraph<?, ?> graph, String description) {
+	public <V, ED> boolean printGraph(MultiGraph<V, ED> graph, String description) {
+		return printGraph(graph, description, new GraphicProperties<>());
+	}
+
+	public <V, ED> boolean printGraph(MultiGraph<V, ED> graph, String description, GraphicProperties<V, ED> gprops) {
 		String filename = "graph_" + descriptionFileList.size();
 		File file = new File(outputDirPath + File.separator + filename + ".html");
 		try {
-			graphVisualizer.renderToFile(graph, description, filename, outputDirPath);
-			String path = file.getCanonicalPath();
-			descriptionFileList.add(new Pair<String, String>(description, path));
+			graphVisualizer.renderToFile(graph, gprops, description, filename, outputDirPath);
+			descriptionFileList.add(new Pair<String, String>(description, file.getName()));
 		} catch (IOException e) {
 			logger.severe("Unable to write to file " + file.getName() + " (" + e.getMessage() + ")!");
 			return false;

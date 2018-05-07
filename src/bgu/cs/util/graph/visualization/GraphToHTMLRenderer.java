@@ -18,6 +18,6 @@ public abstract class GraphToHTMLRenderer {
 	 * @param description
 	 *            A description of the graph.
 	 */
-	public abstract void renderToFile(MultiGraph<?, ?> graph, String description, String filename, String path)
-			throws IOException;
+	public abstract <V, ED> void renderToFile(MultiGraph<V, ED> graph, GraphicProperties<V, ED> gprops,
+			String description, String filename, String path) throws IOException;
 }

@@ -157,9 +157,20 @@ public class HashMultiGraph<Node, ED> implements MultiGraph<Node, ED> {
 
 	@Override
 	public boolean removeEdge(Edge<Node, ED> edge) {
-		throw new UnsupportedOperationException("unimplemented!");
+		var change = false;
+		var outgoing = succs.get(edge.getSrc());
+		if (outgoing != null) {
+			outgoing.remove(edge);
+			change = true;
+		}
+		var incoming = preds.get(edge.getDst());
+		if (incoming != null) {
+			incoming.remove(edge);
+			change = true;
+		}
+		return change;
 	}
-	
+
 	public class HashEdge implements MultiGraph.Edge<Node, ED> {
 		public final Node src;
 		public final Node dst;

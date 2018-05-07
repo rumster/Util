@@ -136,6 +136,7 @@ public interface MultiGraph<Node, ED> {
 	 * Merges the first node into the second (and removes the second node).
 	 */
 	public default void mergeInto(Node from, Node to) {
+		assert containsNode(from) && containsNode(to);
 		if (from == to) {
 			return;
 		}

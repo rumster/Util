@@ -39,23 +39,27 @@ public class GraphToDOT {
 		return result.toString();
 	}
 
-	public static <V, ED> String render(MultiGraph<V, ED> g, String name) {
+	public static <V, ED> String render(MultiGraph<V, ED> g, String name, GraphicProperties<V, ED> props) {
 		StringBuilder result = new StringBuilder();
 		name = name.replace('-', '_');
-		result.append("digraph " + name + " {\n node [shape=box];\n");
+		result.append("digraph " + name + " {\n node [shape=" + props.nodeShape + "];\n");
 
 		HashMap<V, String> nodeToName = new HashMap<>();
 		int nodeCounter = 0;
 		for (V v : g.getNodes()) {
 			String nodeName = "N" + nodeCounter++;
 			nodeToName.put(v, nodeName);
-			result.append(nodeName + " [label=\"" + v.toString() + "\"];\n");
+			var nodeProps = props.nodeProps(v);
+			var nodeStyle = nodeProps.style == null ? "" : ", " + nodeProps.style;
+			result.append(nodeName + " [label=\"" + nodeProps.label + "\"" + nodeStyle + "];\n");
 		}
 		for (V src : g.getNodes()) {
 			final String srcName = nodeToName.get(src);
 			for (MultiGraph.Edge<V, ED> edge : g.succEdges(src)) {
 				final String dstName = nodeToName.get(edge.getDst());
-				result.append(srcName + "->" + dstName + "[label=\"" + edge.getLabel().toString() + "\"];\n");
+				var edProps = props.edgeDataProps(edge.getLabel());
+				var edStyleStr = edProps.style == null ? "" : ", " + edProps.style;
+				result.append(srcName + "->" + dstName + "[label=\"" + edProps.label + "\"" + edStyleStr + "];\n");
 			}
 		}
 		result.append("}");

@@ -30,10 +30,16 @@ public class Union2<T1, T2> {
 		return new Union2<T1, T2>(null, t2);
 	}
 
+	/**
+	 * Tests whether the stored value is of the first type.
+	 */
 	public boolean isT1() {
 		return t1 != null;
 	}
 
+	/**
+	 * Tests whether the stored value is of the second type.
+	 */
 	public boolean isT2() {
 		return t1 != null;
 	}
