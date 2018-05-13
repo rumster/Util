@@ -1,10 +1,8 @@
 package bgu.cs.util.rel;
 
-import java.util.HashSet;
-
 /**
- * An implementation of {@link Rel3Map} based on {@link HashMap> and
- * {@link HashSet}.
+ * An implementation of {@link Rel3Map} based on {@link java.util.HashMap> and
+ * {@link java.util.HashSet}.
  * 
  * @author romanm
  *

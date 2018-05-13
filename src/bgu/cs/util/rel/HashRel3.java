@@ -2,12 +2,11 @@ package bgu.cs.util.rel;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 /**
- * An implementation of {@link Rel3} based on {@link HashMap> and
- * {@link HashSet}.
+ * An implementation of {@link Rel3} based on {@link java.util.HashMap> and
+ * {@link java.util.HashSet}.
  * 
  * @author romanm
  *

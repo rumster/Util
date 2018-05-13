@@ -26,8 +26,8 @@ public class StringUtils {
 	 * 
 	 * @param c
 	 *            A collection.
-	 * @return A list of the string-representation of the elements in the
-	 *         collection separated by a comma.
+	 * @return A list of the string-representation of the elements in the collection
+	 *         separated by a comma.
 	 */
 	public static <T> String toString(Collection<T> c) {
 		StringBuilder result = new StringBuilder();
@@ -128,8 +128,8 @@ public class StringUtils {
 	}
 
 	/**
-	 * Splits a string by considering " " as a separator and storing the
-	 * resulting sub-string in a list.
+	 * Splits a string by considering " " as a separator and storing the resulting
+	 * sub-string in a list.
 	 * 
 	 * @param s
 	 *            A string.
@@ -140,8 +140,8 @@ public class StringUtils {
 	}
 
 	/**
-	 * Splits a string according to the specified separator string and stores
-	 * the result in a list.
+	 * Splits a string according to the specified separator string and stores the
+	 * result in a list.
 	 * 
 	 * @param s
 	 *            A string.
@@ -182,6 +182,9 @@ public class StringUtils {
 	 * 
 	 * @param c
 	 *            A collection.
+	 * @param The
+	 *            string used to separate the elements of the collection. <T> The
+	 *            type of elements in the collection.
 	 * @return A list of sub-strings separated by the given separator string.
 	 */
 	public static <T> String toString(Collection<T> c, String separator) {

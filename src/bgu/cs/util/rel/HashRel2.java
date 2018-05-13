@@ -11,8 +11,8 @@ import java.util.function.BiFunction;
 import bgu.cs.util.Pair;
 
 /**
- * An implementation of {@link Rel2} based on {@link HashMap> and
- * {@link HashSet}.
+ * An implementation of {@link Rel2} based on {@link java.util.HashMap> and
+ * {@link java.util.HashSet}.
  * 
  * @author romanm
  *
@@ -119,7 +119,7 @@ public class HashRel2<E1, E2> implements Rel2<E1, E2> {
 	 * Applies a binary function to each pair of elements in the relation. This is a
 	 * more efficient way to gain access to all pairs then {@link all}.
 	 * 
-	 * @param entryFun
+	 * @param fun
 	 *            A function applies to (e1, e2) with a side-effect.
 	 */
 	public void map(BiFunction<E1, E2, Void> fun) {
