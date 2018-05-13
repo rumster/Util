@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiPredicate;
 
 /**
  * Utilities for managing collections.
@@ -14,6 +15,41 @@ import java.util.Set;
  * 
  */
 public class Collections {
+	/**
+	 * Adds the given element to the given collection, unless it already appears
+	 * there.
+	 * 
+	 * @return true if the collection has changed due to the operation, and false
+	 *         otherwise.
+	 */
+	public static <E> boolean addNoCopies(Collection<E> c, E obj) {
+		if (!c.contains(obj)) {
+			c.add(obj);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Adds the given element to the given collection, unless it contains an element
+	 * that tests positively when compared to the given element.
+	 * 
+	 * @return true if the collection has changed due to the operation, and false
+	 *         otherwise.
+	 */
+	public static <E> boolean addNoEquiv(Collection<E> c, E obj, BiPredicate<E, E> equivTest) {
+		for (var member : c) {
+			if (equivTest.test(member, obj)) {
+				return false;
+			}
+		}
+		c.add(obj);
+		return true;
+	}
+
+	/**
+	 * Fills a list with the given number of the given element.
+	 */
 	public static <E> void addCopies(List<? super E> list, E obj, int num) {
 		for (int i = 0; i < num; ++i) {
 			list.add(obj);
