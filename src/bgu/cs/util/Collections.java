@@ -5,8 +5,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiPredicate;
+import java.util.function.Supplier;
 
 /**
  * Utilities for managing collections.
@@ -15,6 +17,21 @@ import java.util.function.BiPredicate;
  * 
  */
 public class Collections {
+	/**
+	 * Fills the given collection using values from the given supplier, until the
+	 * supplier stops providing them.
+	 */
+	public static <E> void fill(Collection<E> c, Supplier<Optional<E>> supplier) {
+		while (true) {
+			var optElem = supplier.get();
+			if (optElem.isPresent()) {
+				c.add(optElem.get());
+			} else {
+				return;
+			}
+		}
+	}
+
 	/**
 	 * Adds the given element to the given collection, unless it already appears
 	 * there.
