@@ -76,7 +76,19 @@ public class HTMLPrinter {
 		}
 		return printTableOfContentsFile();
 	}
+	
+	public void severe(String message) {
+		logger.severe(message);
+	}
 
+	public void warning(String message) {
+		logger.warning(message);
+	}
+	
+	public void info(String message) {
+		logger.info(message);
+	}
+	
 	public boolean addCodeFile(String fileName, String content, String description) {
 		ST template = templates.load("code");
 		template.add("description", description);
