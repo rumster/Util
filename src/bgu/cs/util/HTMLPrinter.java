@@ -41,7 +41,7 @@ public class HTMLPrinter {
 	}
 
 	/**
-	 * Constructs a printer with a default logger.
+	 * Constructs a printer.
 	 * 
 	 * @param title
 	 *            The title of the main HTML page.

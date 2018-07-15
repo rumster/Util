@@ -19,7 +19,7 @@ public class CaseAssignFieldRef extends CaseAssign {
 		super.match(stmt);
 		if (lhs instanceof FieldRef) {
 			fieldRef = (FieldRef) lhs;
-			rhs = (Local) super.rhs;
+			rhs = super.rhs;
 			field = fieldRef.getField();
 			return true;
 		} else {
